@@ -3,6 +3,7 @@ import styled from 'styled-components'
 export const ChartBox = styled.div`
   padding: 24px;
   width: 1238px;
+  position: relative;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
   border-radius: 20px;
   border: 1px solid #f8f9fa;
@@ -13,16 +14,17 @@ export const ChartBox = styled.div`
 export const ChartLayout = styled.div`
   display: flex;
   width: 100%;
-  gap: 20px;
   align-items: flex-start;
 `
 
 export const YAxisContainer = styled.div`
+  position: absolute;
+  top: 12px;
   width: 40px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 220px;
+  height: 232px;
   font-size: 12px;
 
   color: var(--Grey-400, #a3a3a3);
@@ -45,6 +47,7 @@ export const ChartInner = styled.div`
   position: relative;
   height: 220px;
   display: flex;
+  justify-content: flex-end;
   align-items: flex-end;
 `
 
@@ -60,13 +63,13 @@ export const GridLine = styled.div`
 export const BarsWrapper = styled.div`
   display: flex;
   height: 100%;
-  gap: 24px;
+  gap: 14px;
   padding: 0 16px;
   z-index: 2;
 `
 
 export const MonthColumn = styled.div`
-  min-width: 60px;
+  min-width: 80px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -74,14 +77,14 @@ export const MonthColumn = styled.div`
 
 export const MonthBars = styled.div`
   display: flex;
-  gap: 6px;
+  gap: 4px;
   align-items: flex-end;
   height: 100%;
 `
 
 export const Bar = styled.div`
-  width: 14px;
-  border-radius: 4px 4px 0 0;
+  width: 12px;
+  border-radius: 2px 2px 0 0;
   position: relative;
   z-index: 2;
 `
@@ -89,7 +92,8 @@ export const Bar = styled.div`
 /* AGORA FORA DO GRÁFICO */
 export const LabelsRow = styled.div`
   display: flex;
-  gap: 24px;
+  justify-content: flex-end;
+  gap: 14px;
   padding: 8px 16px 0;
 `
 
