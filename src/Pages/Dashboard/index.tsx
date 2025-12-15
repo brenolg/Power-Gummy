@@ -51,7 +51,7 @@ export default function Dashboard() {
       <FlexContainer>
         <StatCard icon={user} value={data.uniqueCustomersCount} label="Qtd de Clientes" />
         <StatCard icon={cart} value={data.totalSalesCount} label="Qtd de potes vendidoss" />
-        <StatCard icon={money} value={data.totalRevenue} label="Faturamento total" purple />
+        <StatCard icon={money} value={fmtBRL(data.totalRevenue)} label="Faturamento total" purple />
       </FlexContainer>
       <Divider mb={33} />
       <FlexContainer>

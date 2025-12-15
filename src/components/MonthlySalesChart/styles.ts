@@ -24,7 +24,7 @@ export const YAxisContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 232px;
+  height: 236px;
   font-size: 12px;
 
   color: var(--Grey-400, #a3a3a3);

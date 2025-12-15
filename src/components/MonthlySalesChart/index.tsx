@@ -95,14 +95,18 @@ export default function MonthlySalesChart({ data }) {
             {chartData.map((m, idx) => (
               <MonthColumn key={idx}>
                 <MonthLabel>{m.month}</MonthLabel>
-                <TotalAbove>{monthlyTotals[idx] > 0 && fmtBRL(monthlyTotals[idx])}</TotalAbove>
+                <TotalAbove>{monthlyTotals[idx] > 0 ? fmtBRL(monthlyTotals[idx]) : '-'}</TotalAbove>
 
                 <ValuesBelow>
-                  {productNames.map((name, ci) => (
-                    <div key={ci} style={{ color: COLORS[ci] }}>
-                      {fmtBRL(m[name])}
-                    </div>
-                  ))}
+                  {productNames.map((name, ci) => {
+                    const value = m[name]
+
+                    return (
+                      <div key={ci} style={{ color: COLORS[ci] }}>
+                        {value > 0 ? fmtBRL(value) : '-'}
+                      </div>
+                    )
+                  })}
                 </ValuesBelow>
               </MonthColumn>
             ))}
