@@ -1,5 +1,5 @@
 // Cupons.tsx
-import { Btn, Subtitle, TableContainer, Title } from './styles'
+import { BannersContainer, Btn, Subtitle, TableContainer, TableTitle, Title } from './styles'
 import plus from '@/assets/icons/plus.svg'
 import { Divider } from '@/components'
 import Modal from '@/components/Modal'
@@ -124,7 +124,11 @@ export default function Cupons() {
         <img src={plus} alt="Adicionar" /> Novo Banner
       </Btn>
       <Divider mb={24} />
+
       <Subtitle>Banner ativos</Subtitle>
+      <BannersContainer>x</BannersContainer>
+
+      <TableTitle>Banners cadastrados</TableTitle>
 
       <TableContainer>
         <Table
@@ -136,6 +140,7 @@ export default function Cupons() {
           setPage={setPage}
           filterData={data}
           pageData={tableRows(pageData)}
+          rowHight={56}
         />
       </TableContainer>
 

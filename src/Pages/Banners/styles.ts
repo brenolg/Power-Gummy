@@ -46,6 +46,23 @@ export const Subtitle = styled.h1`
   line-height: normal;
   margin-bottom: 24px;
 `
+
+export const TableTitle = styled.h1`
+  color: var(--roxo-700, #502665);
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  margin-bottom: 24px;
+`
+
+export const BannersContainer = styled.div`
+  height: 129.167px;
+  background-color: green;
+  margin-bottom: 24px;
+`
+
 export const TableContainer = styled.div`
   width: calc(100vw - 56px - 59px); /* força ocupar a largura real da tela */
   max-width: calc(100vw - 56px - 59px);
