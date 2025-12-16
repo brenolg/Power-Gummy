@@ -21,6 +21,7 @@ export default function CoreDataProvider({ children }: { children: ReactNode }) 
   const [shipping, setShipping] = useState<ShippingResponse['frete'] | null>(null)
   const [juros, setJuros] = useState(0)
   const [openCart, setOpenCart] = useState(false)
+  const [showAuth, setShowAuth] = useState(false)
 
   const CART_KEY = 'powergummy.cart'
 
@@ -66,7 +67,9 @@ export default function CoreDataProvider({ children }: { children: ReactNode }) 
   useEffect(() => {
     try {
       localStorage.setItem(CART_KEY, JSON.stringify(cartStorage))
-    } catch {}
+    } catch {
+      console.log('x')
+    }
   }, [cartStorage])
 
   return (
@@ -94,6 +97,8 @@ export default function CoreDataProvider({ children }: { children: ReactNode }) 
         setJuros,
         openCart,
         setOpenCart,
+        showAuth,
+        setShowAuth,
       }}
     >
       {children}

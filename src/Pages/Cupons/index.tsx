@@ -9,6 +9,8 @@ import { useEffect, useState } from 'react'
 import CreateCouponForm from './CreateCouponForm'
 import Table from '@/components/Table'
 import CouponRow from './CouponRow'
+import AuthModal from '@/components/AuthModal'
+import { useCoreData } from '@/context/coreDataContext'
 
 export type Coupon = {
   id: string
@@ -24,6 +26,7 @@ export type Coupon = {
 
 export default function Cupons() {
   const { fetcher } = useFetch()
+  const { setShowAuth } = useCoreData()
   const [loading, setLoading] = useState(true)
   const [data, setData] = useState<Coupon[]>([])
   const [open, setOpen] = useState(false)
@@ -35,6 +38,9 @@ export default function Cupons() {
         setLoading(true)
         const res = (await fetcher('/admin/coupons', 'GET')) as Coupon[]
         setData(res)
+      } catch (error) {
+        console.error('Erro ao carregar Coupons:', error)
+        setShowAuth(true) // 👈 AQUI
       } finally {
         setLoading(false)
       }
@@ -77,7 +83,7 @@ export default function Cupons() {
       )
     } catch (err) {
       console.error('Erro ao atualizar cupom', err)
-      alert('Não foi possível atualizar o cupom. Tente novamente. ')
+      setShowAuth(true)
     }
   }
 
@@ -91,7 +97,7 @@ export default function Cupons() {
       setData((prev) => prev.filter((coupon) => coupon.id !== item.id))
     } catch (err) {
       console.error('Erro ao excluir cupom', err)
-      alert('Não foi possível excluir o cupom.')
+      setShowAuth(true)
     }
   }
 
@@ -136,6 +142,8 @@ export default function Cupons() {
       <Modal open={open} onClose={() => setOpen(false)} maxWidth="754px">
         <CreateCouponForm setData={setData} setOpen={setOpen} />
       </Modal>
+
+      <AuthModal />
     </div>
   )
 }

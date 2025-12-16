@@ -15,3 +15,11 @@ export const FlexContainer = styled.div`
   gap: 24px;
   margin-bottom: 24px;
 `
+export const TableContainer = styled.div`
+  width: calc(100vw - 56px - 59px); /* força ocupar a largura real da tela */
+  max-width: calc(100vw - 56px - 59px);
+  overflow-x: auto; /* garante scroll horizontal */
+  overflow-y: hidden;
+  padding-bottom: 8px;
+  padding-right: 24px;
+`

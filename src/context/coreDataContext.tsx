@@ -77,6 +77,9 @@ type CoreDataContextProps = {
 
   openCart: boolean
   setOpenCart: React.Dispatch<React.SetStateAction<boolean>>
+
+  showAuth: boolean
+  setShowAuth: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export const CoreDataContext = createContext<CoreDataContextProps | undefined>(undefined)

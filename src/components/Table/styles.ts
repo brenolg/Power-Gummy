@@ -96,6 +96,15 @@ export const TableContent = styled.div<Style>`
     line-height: normal;
   }
 
+  .purple {
+    color: var(--dourado-200, #502665);
+    font-family: 'Nunito Sans';
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+  }
+
   .grid-action-area {
     display: flex;
     gap: 16px;

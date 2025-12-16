@@ -6,6 +6,8 @@ import glass from '@/assets/icons/glassP.svg'
 import Table from '@/components/Table'
 import LeadRow from './LeadRow'
 import { useMemo } from 'react'
+import { useCoreData } from '@/context/coreDataContext'
+import AuthModal from '@/components/AuthModal'
 
 export default function Clients() {
   const { fetcher } = useFetch()
@@ -13,6 +15,7 @@ export default function Clients() {
   const [data, setData] = useState<any[]>([])
   const [page, setPage] = useState(1)
   const [search, setSearch] = useState('')
+  const { setShowAuth } = useCoreData()
 
   useEffect(() => {
     async function load() {
@@ -49,6 +52,9 @@ export default function Clients() {
         })
         console.log(normalized)
         setData(normalized)
+      } catch (error) {
+        console.error('Erro ao carregar leads:', error)
+        setShowAuth(true) // 👈 AQUI
       } finally {
         setLoading(false)
       }
@@ -126,6 +132,8 @@ export default function Clients() {
           rowHight={72}
         />
       </TableContainer>
+
+      <AuthModal />
     </div>
   )
 }

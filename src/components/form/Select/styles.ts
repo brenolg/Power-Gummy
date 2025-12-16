@@ -71,11 +71,11 @@ export const Dropdown = styled.div`
   top: 105%;
   width: 100%;
   background-color: white;
-  border: 1px solid #ccc;
   border-radius: 5px;
   z-index: 99;
   max-height: 300px;
   overflow-y: auto;
+  border: 1px solid #ccc;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   &::-webkit-scrollbar-button {
     display: none;

@@ -53,7 +53,7 @@ export const ChartInner = styled.div`
 
 export const GridLine = styled.div`
   position: absolute;
-  left: 0;
+  left: 30px;
   right: 0;
   height: 1px;
   background: #eee;
