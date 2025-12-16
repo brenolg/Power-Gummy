@@ -13,7 +13,7 @@ interface CouponRowProps {
   onDelete: (item: Coupon) => void
 }
 
-export default function CouponRow({ item, index, onEdit, onDelete }: CouponRowProps) {
+export default function BannersRow({ item, index, onEdit, onDelete }: CouponRowProps) {
   const [showEdit, setShowEdit] = useState(false)
   const [openStatus, setOpenStatus] = useState(false)
 

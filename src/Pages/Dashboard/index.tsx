@@ -10,7 +10,7 @@ import { fmtBRL } from '@/utils/helper'
 import { Divider } from '@/components'
 import MonthlySalesChart from '@/components/MonthlySalesChart'
 import Table from '@/components/Table'
-import LeadRow from './LeadRow'
+import DashboardRow from './DashboardRow'
 import { useCoreData } from '@/context/coreDataContext'
 import AuthModal from '@/components/AuthModal'
 import YearSelect from '@/components/YearSelect'
@@ -92,7 +92,7 @@ export default function Dashboard() {
       0
     )
     return list.map((item, i) => (
-      <LeadRow
+      <DashboardRow
         key={item.productId}
         item={item}
         index={i}
@@ -127,7 +127,9 @@ export default function Dashboard() {
         <PageLoading />
       ) : (
         <>
-          <MonthlySalesChart data={data} />
+          <TableContainer>
+            <MonthlySalesChart data={data} />
+          </TableContainer>
 
           <Title style={{ marginTop: '24px' }}>Produtos vendidos</Title>
           <TableContainer>

@@ -14,6 +14,7 @@ const Content = styled.main`
   padding-top: 56px;
   padding-left: 56px;
   background: #fdfdfd;
+  max-width: calc(100vw - 100px);
 `
 
 export default function AdminLayout() {

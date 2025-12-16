@@ -52,10 +52,8 @@ export default function LeadRow({ item, index }: { item: any; index: any }) {
       {new Date(item.createdAt).toLocaleDateString('pt-BR')}
     </div>,
 
-    <Tippy content={item.name} theme="custom hidden">
-      <div key={`client-${index}`} className="grid-item max160 hidden">
-        {item.name}
-      </div>
+    <Tippy content={item.name} theme="custom hidden" key={`client-${index}`}>
+      <div className="grid-item max160 hidden">{item.name}</div>
     </Tippy>,
 
     <div key={`contact-${index}`} className="grid-item">
@@ -105,7 +103,7 @@ export default function LeadRow({ item, index }: { item: any; index: any }) {
           const isGold = cartItem.productId === 'powergummy-1' // 👈 regra
 
           return (
-            <ImageContainer key={i} $img={image} $isGold={!isGold}>
+            <ImageContainer key={`${i}${index}${image}`} $img={image} $isGold={!isGold}>
               <QuantityBadge>{cartItem.quantity}</QuantityBadge>
             </ImageContainer>
           )
@@ -124,7 +122,7 @@ export default function LeadRow({ item, index }: { item: any; index: any }) {
     >
       {item.coupon?.length ? (
         item.coupon.map((c: any, i: number) => (
-          <Tippy key={i} content={c.code} theme="custom">
+          <Tippy key={`coupon-${index}${i}`} content={c.code} theme="custom">
             <span>{c.code}</span>
           </Tippy>
         ))

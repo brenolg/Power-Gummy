@@ -14,7 +14,7 @@ const productImages: Record<ProductId, string> = {
   'powergummy-1':
     'https://firebasestorage.googleapis.com/v0/b/powergummy-prod.firebasestorage.app/o/EmbalagemFrente.png?alt=media&token=56f24118-8c1c-4d48-b3d8-db7b69db0a09',
 }
-export default function LeadRow({ item, index, totalRevenue }: LeadRowProps) {
+export default function DashboardRow({ item, index, totalRevenue }: LeadRowProps) {
   const image = productImages[item.productId as ProductId]
   const isGold = item.productId === 'powergummy-1'
 

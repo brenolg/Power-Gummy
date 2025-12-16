@@ -42,9 +42,9 @@ const depoimentos: Depoimento[] = [
   {
     isVideo: false,
     before:
-      'https://firebasestorage.googleapis.com/v0/b/powergummy-prod.firebasestorage.app/o/bef3.png?alt=media&token=10226fb7-1beb-499a-866e-eda5f70990e8',
+      'https://firebasestorage.googleapis.com/v0/b/powergummy-prod.firebasestorage.app/o/bef3.png?alt=media&token=2b93d88f-930b-4709-98ff-3333242cf951',
     after:
-      'https://firebasestorage.googleapis.com/v0/b/powergummy-prod.firebasestorage.app/o/after3.png?alt=media&token=582f7d2d-a366-4618-9b08-b0ae790a3c7f',
+      'https://firebasestorage.googleapis.com/v0/b/powergummy-prod.firebasestorage.app/o/after3.png?alt=media&token=87179d9f-7c56-48b8-8f79-59a4b6198e6a',
     label: 'Cabelos Fortes',
     time: '3 mese',
   },
