@@ -83,6 +83,9 @@ export const TableContent = styled.div<Style>`
     text-overflow: ellipsis;
     min-width: 0;
     padding-right: 10px;
+    img {
+      height: 40px;
+    }
   }
   .hidden {
     overflow: hidden;

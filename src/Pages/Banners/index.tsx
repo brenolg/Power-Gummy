@@ -8,46 +8,85 @@ import { useFetch } from '@/hooks/useFetch'
 import { useEffect, useState } from 'react'
 
 import Table from '@/components/Table'
-import CouponRow from './BannersRow'
+import BannersRow from './BannersRow'
 import AuthModal from '@/components/AuthModal'
 import { useCoreData } from '@/context/coreDataContext'
 
-export type Coupon = {
+export type BannerDevice = 'mobile' | 'desktop'
+
+export type Banner = {
   id: string
-  code: string
-  percent: number
+  imageUrl: string
+  createdAt: string
   active: boolean
-  influencer?: string
-  createdAt: {
-    _seconds: number
-  }
-  usageCount?: number
+  position: number
+  device: BannerDevice
+  context: string
 }
 
 export default function Cupons() {
   const { fetcher } = useFetch()
   const { setShowAuth } = useCoreData()
   const [loading, setLoading] = useState(true)
-  const [data, setData] = useState<Coupon[]>([])
+  const [data, setData] = useState<Banner[]>([])
   const [open, setOpen] = useState(false)
   const [page, setPage] = useState(1)
+
+  type DeviceType = 'mobile' | 'desktop'
+
+  function detectDeviceByAspectRatio(width: number, height: number): DeviceType {
+    const ratio = width / height
+
+    if (ratio < 1) return 'mobile' // vertical
+    if (ratio >= 1.3) return 'desktop' // horizontal
+
+    return 'desktop'
+  }
+
+  function getImageDevice(imageUrl: string): Promise<DeviceType> {
+    return new Promise((resolve) => {
+      const img = new Image()
+      img.src = imageUrl
+
+      img.onload = () => {
+        resolve(detectDeviceByAspectRatio(img.width, img.height))
+      }
+
+      img.onerror = () => {
+        resolve('desktop') // fallback seguro
+      }
+    })
+  }
 
   useEffect(() => {
     async function load() {
       try {
         setLoading(true)
-        const res = (await fetcher('/admin/coupons', 'GET')) as Coupon[]
-        setData(res)
+
+        const res = (await fetcher('/admin/banners', 'GET')) as Banner[]
+
+        const enriched = await Promise.all(
+          res.map(async (item) => {
+            const device = await getImageDevice(item.imageUrl)
+
+            return {
+              ...item,
+              device, // 👈 chave adicionada aqui
+            }
+          })
+        )
+        console.log(enriched)
+        setData(enriched)
       } catch (error) {
-        console.error('Erro ao carregar Coupons:', error)
-        setShowAuth(true) // 👈 AQUI
+        console.error('Erro ao carregar Banners:', error)
+        setShowAuth(true)
       } finally {
         setLoading(false)
       }
     }
 
     load()
-  }, [fetcher])
+  }, [])
 
   const pageSize = 10
   const pageData = data.slice((page - 1) * pageSize, page * pageSize)
@@ -55,28 +94,28 @@ export default function Cupons() {
   const header = [
     '#',
     'QUANDO FOI CRIADO',
-    'Preview desktop',
-    'Preview Celular',
+    'posição',
+    'Formato',
+    'Preview',
     'Contexto',
-    'Posição',
     'status',
     'ação',
   ]
 
   // PATCH /admin/coupon/{COUPON_ID}
-  async function handleEditCoupon(edited: Coupon) {
+  async function handleEditCoupon(edited: Banner) {
     try {
       const body = {
         active: edited.active,
-        code: edited.code,
-        percent: edited.percent,
-        influencer: edited.influencer ?? '', // ✅ sempre manda string
+        context: edited.context ?? '',
+        position: edited.position,
+        // ✅ sempre manda string
       }
-
+      //,
       console.log('PATCH id:', edited.id)
       console.log('BODY PATCH', body)
 
-      await fetcher(`/admin/coupon/${edited.id}`, 'PATCH', { body })
+      await fetcher(`/admin/banner/${edited.id}`, 'PATCH', { body })
 
       setData((prev) =>
         prev.map((coupon) => (coupon.id === edited.id ? { ...coupon, ...edited } : coupon))
@@ -87,11 +126,11 @@ export default function Cupons() {
     }
   }
 
-  async function handleDeleteCoupon(item: Coupon) {
+  async function handleDeleteCoupon(item: Banner) {
     try {
       console.log('DELETE id:', item.id)
 
-      await fetcher(`/admin/coupons/${item.id}`, 'DELETE')
+      await fetcher(`/admin/banner/${item.id}`, 'DELETE')
 
       // remove da tela após sucesso
       setData((prev) => prev.filter((coupon) => coupon.id !== item.id))
@@ -101,11 +140,11 @@ export default function Cupons() {
     }
   }
 
-  function tableRows(coupons: Coupon[]) {
+  function tableRows(coupons: Banner[]) {
     if (!coupons) return []
 
     return coupons.map((item, i) => (
-      <CouponRow
+      <BannersRow
         key={item.id}
         item={item}
         index={i}
@@ -126,7 +165,16 @@ export default function Cupons() {
       <Divider mb={24} />
 
       <Subtitle>Banner ativos</Subtitle>
-      <BannersContainer>x</BannersContainer>
+      <TableContainer>
+        <BannersContainer>
+          {data
+            .filter((item) => item.active && item.device === 'desktop')
+            .sort((a, b) => a.position - b.position)
+            .map((item) => (
+              <img key={item.id} src={item.imageUrl} alt={`Banner ${item.position}`} />
+            ))}
+        </BannersContainer>
+      </TableContainer>
 
       <TableTitle>Banners cadastrados</TableTitle>
 
@@ -136,7 +184,7 @@ export default function Cupons() {
           header={header}
           key={JSON.stringify(data)}
           page={page}
-          columnsWidths={[40, 220, 200, 160, 140, 220, 140, 110]}
+          columnsWidths={[40, 220, 128, 144, 200, 200, 200, 110]}
           setPage={setPage}
           filterData={data}
           pageData={tableRows(pageData)}

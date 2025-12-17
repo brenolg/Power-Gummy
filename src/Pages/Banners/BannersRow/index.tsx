@@ -3,31 +3,43 @@ import editIcon from '@/assets/icons/edit.svg'
 import trash from '@/assets/icons/trash.svg'
 import { useState } from 'react'
 import { FakeInput } from '@/components/form/FakeInput'
-import type { Coupon } from '..' // ajusta o caminho se o index estiver em outra pasta
-import { StatusValue, StatusMenu, StatusArrow, StatusOption, StatusDropdown } from './styles'
+import type { Banner } from '..' // ajusta o caminho se o index estiver em outra pasta
+import {
+  StatusValue,
+  StatusMenu,
+  StatusArrow,
+  StatusOption,
+  StatusDropdown,
+  DeviceLabel,
+  PositionDropdown,
+  PositionArrow,
+  PositionMenu,
+  PositionOption,
+  PositionLabel,
+} from './styles'
+import desktopIcon from '@/assets/imgs/desktop.svg'
+import mobileIcon from '@/assets/imgs/mobile.svg'
 
-interface CouponRowProps {
-  item: Coupon
+interface BannersRowProps {
+  item: Banner
   index: number
-  onEdit: (item: Coupon) => void
-  onDelete: (item: Coupon) => void
+  onEdit: (item: Banner) => void
+  onDelete: (item: Banner) => void
 }
 
-export default function BannersRow({ item, index, onEdit, onDelete }: CouponRowProps) {
+export default function BannersRow({ item, index, onEdit, onDelete }: BannersRowProps) {
   const [showEdit, setShowEdit] = useState(false)
   const [openStatus, setOpenStatus] = useState(false)
-
-  const [code, setCode] = useState(item.code)
-  const [percent, setPercent] = useState(item.percent?.toString() ?? '')
-  const [influencer, setInfluencer] = useState(item.influencer ?? '')
+  const [position, setPosition] = useState(item.position)
+  const [context, setContext] = useState(item.context ?? '')
   const [active, setActive] = useState(item.active)
+  const [openPosition, setOpenPosition] = useState(false)
 
   const handleConfirm = () => {
-    const edited: Coupon = {
+    const edited: Banner = {
       ...item, // mantém id, active, createdAt, usageCount
-      code,
-      percent: percent ? Number(percent) : item.percent,
-      influencer: influencer || undefined,
+      position,
+      context: context || '',
       active,
     }
     console.log('EDITED', edited)
@@ -42,33 +54,52 @@ export default function BannersRow({ item, index, onEdit, onDelete }: CouponRowP
     </div>,
 
     <div key={`created-${index}`} className="grid-item">
-      {new Date(item.createdAt._seconds * 1000).toLocaleDateString('pt-BR')}
+      {new Date(item.createdAt).toLocaleDateString('pt-BR')}
     </div>,
 
-    <div key={`code-${index}`} className="grid-item">
-      {showEdit ? <FakeInput value={code} onChange={setCode} /> : item.code || '-'}
-    </div>,
-
-    <div key={`percent-${index}`} className="grid-item">
+    <div key={`position-${index}`} className="grid-item">
       {showEdit ? (
-        <FakeInput type="numberCents" value={percent} onChange={setPercent} />
-      ) : item.percent != null ? (
-        `${item.percent}%`
+        <div style={{ position: 'relative' }}>
+          <PositionDropdown $open={openPosition} onClick={() => setOpenPosition((prev) => !prev)}>
+            {position}
+            <PositionArrow $open={openPosition} />
+          </PositionDropdown>
+
+          {openPosition && (
+            <PositionMenu>
+              {[1, 2, 3, 4].map((n) => (
+                <PositionOption
+                  key={n}
+                  $selected={position === n}
+                  onClick={() => {
+                    setPosition(n)
+                    setOpenPosition(false)
+                  }}
+                >
+                  {n}
+                </PositionOption>
+              ))}
+            </PositionMenu>
+          )}
+        </div>
       ) : (
-        '-'
+        <PositionLabel>{position}</PositionLabel>
       )}
     </div>,
 
-    <div key={`usageCount-${index}`} className="grid-item">
-      {item.usageCount != null ? `${item.usageCount}` : '0'}
+    <div key={`format-${index}`} className="grid-item">
+      <DeviceLabel>
+        <img src={item.device === 'mobile' ? mobileIcon : desktopIcon} alt={item.device} />
+        {item.device === 'mobile' ? 'Mobile' : 'Desktop'}
+      </DeviceLabel>
     </div>,
 
-    <div key={`influencer-${index}`} className={`grid-item ${!showEdit ? 'hidden' : ''}`}>
-      {showEdit ? (
-        <FakeInput value={influencer} onChange={setInfluencer} />
-      ) : (
-        item.influencer || '-'
-      )}
+    <div key={`preview-${index}`} className="grid-item">
+      <img src={item.imageUrl} />
+    </div>,
+
+    <div key={`context-${index}`} className={`grid-item ${!showEdit ? 'hidden' : ''}`}>
+      {showEdit ? <FakeInput value={context} onChange={setContext} /> : item.context || '-'}
     </div>,
 
     <div key={`status-${index}`} className="grid-item">

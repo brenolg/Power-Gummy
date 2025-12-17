@@ -59,8 +59,13 @@ export const TableTitle = styled.h1`
 
 export const BannersContainer = styled.div`
   height: 129.167px;
-  background-color: green;
   margin-bottom: 24px;
+  display: flex;
+  gap: 12px;
+  img {
+    height: 129.167px;
+    border-radius: 4px;
+  }
 `
 
 export const TableContainer = styled.div`
