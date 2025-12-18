@@ -29,7 +29,13 @@ export type BannerFormData = {
   context: string
 }
 
-export default function BannerForm() {
+import type { Banner } from '../index'
+
+type BannerFormProps = {
+  setData: React.Dispatch<React.SetStateAction<Banner[]>>
+}
+
+export default function BannerForm({ setData }: BannerFormProps) {
   const { fetcher } = useFetch()
   const [loading, setLoading] = useState(false)
 
@@ -78,6 +84,30 @@ export default function BannerForm() {
       })
 
       console.log('Banner criado com sucesso')
+
+      const now = new Date().toISOString()
+
+      setData((prev) => [
+        {
+          id: crypto.randomUUID(),
+          imageUrl: desktopImageUrl,
+          device: 'desktop',
+          context: data.context,
+          position: prev.length + 1,
+          active: true,
+          createdAt: now,
+        },
+        {
+          id: crypto.randomUUID(),
+          imageUrl: mobileImageUrl,
+          device: 'mobile',
+          context: data.context,
+          position: prev.length + 1,
+          active: true,
+          createdAt: now,
+        },
+        ...prev,
+      ])
     } catch (error) {
       console.error('Erro ao enviar banner:', error)
     } finally {

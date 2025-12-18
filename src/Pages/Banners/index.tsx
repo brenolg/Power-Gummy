@@ -25,7 +25,7 @@ export type Banner = {
   context: string
 }
 
-export default function Cupons() {
+export default function Banners() {
   const { fetcher } = useFetch()
   const { setShowAuth } = useCoreData()
   const [loading, setLoading] = useState(true)
@@ -202,7 +202,7 @@ export default function Cupons() {
       </TableContainer>
 
       <Modal open={open} onClose={() => setOpen(false)} maxWidth="890px">
-        <BannerForm />
+        <BannerForm setData={setData} />
       </Modal>
 
       <AuthModal />
