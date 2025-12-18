@@ -232,9 +232,9 @@ export default function BannerForm({ setData, banners, setOpen }: BannerFormProp
             </FileCard>
           </CardsContainer>
 
-          <SubTtile>Banner ativos</SubTtile>
+          <SubTtile style={{ marginBottom: '24px' }}>Sobre o Banner</SubTtile>
           <div style={{ maxWidth: '315px' }}>
-            <MInput name="context" type="text" placeholder="Endereço" hasAsterisk mb={26} />
+            <MInput name="context" type="text" placeholder="Contexto" hasAsterisk mb={26} />
           </div>
           <ErrorMsg>{error}</ErrorMsg>
           <MainButton type="submit" maxW={180} font={14} height={50} loading={loading}>

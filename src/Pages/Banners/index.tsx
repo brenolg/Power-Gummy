@@ -187,7 +187,7 @@ export default function Banners() {
 
       <TableTitle>Banners cadastrados</TableTitle>
 
-      <TableContainer>
+      <TableContainer style={{ paddingBottom: '90px' }}>
         <Table
           width={1238}
           header={header}

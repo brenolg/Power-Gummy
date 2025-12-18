@@ -119,6 +119,8 @@ export const ForgotPassword = styled.a`
   line-height: 20px; /* 142.857% */
   text-align: center;
   width: 100%;
+  opacity: 0;
+  pointer-events: none;
 
   text-align: center;
   display: block;
