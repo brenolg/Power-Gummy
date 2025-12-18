@@ -21,65 +21,69 @@ const MONTHS = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', '
 const COLORS = ['#B07A24', '#4B2377']
 const CHART_HEIGHT = 220
 
-export default function MonthlySalesChart({ data }) {
+export default function MonthlySalesChart({ data }: any) {
   if (!data?.monthlyData) return null
 
-  const productNames = Array.from(
-    new Set(data.monthlyData.flatMap((m) => m.products.map((p) => p.name)))
+  const productNames: any[] = Array.from(
+    new Set(data.monthlyData.flatMap((m: any) => m.products.map((p: any) => p.name)))
   )
 
-  const chartData = MONTHS.map((month, index) => {
-    const m = data.monthlyData[index]
+  const chartData: any[] = MONTHS.map((month: any, index: any) => {
+    const m: any = data.monthlyData[index]
     const row: any = { month }
 
-    productNames.forEach((name) => {
-      const p = m?.products?.find((x) => x.name === name)
+    productNames.forEach((name: any) => {
+      const p = m?.products?.find((x: any) => x.name === name)
       row[name] = p ? p.revenue : 0
     })
 
     return row
   })
 
-  const maxValue = Math.max(...chartData.flatMap((m) => productNames.map((n) => m[n])))
+  const maxValue = Math.max(...chartData.flatMap((m: any) => productNames.map((n: any) => m[n])))
 
-  const STEP_VALUE = 2000
-  const GRID_STEPS = Math.ceil(maxValue / STEP_VALUE)
-  const MIN_STEPS = 5
-  const totalSteps = Math.max(GRID_STEPS, MIN_STEPS)
+  const STEP_VALUE: any = 2000
+  const GRID_STEPS: any = Math.ceil(maxValue / STEP_VALUE)
+  const MIN_STEPS: any = 5
+  const totalSteps: any = Math.max(GRID_STEPS, MIN_STEPS)
 
-  const monthlyTotals = chartData.map((m) =>
-    productNames.reduce((acc, name) => acc + (m[name] || 0), 0)
+  const monthlyTotals: any[] = chartData.map((m: any) =>
+    productNames.reduce((acc: any, name: any) => acc + (m[name] || 0), 0)
   )
 
   return (
     <ChartBox>
       <ChartLayout>
         <YAxisContainer>
-          {Array.from({ length: totalSteps + 1 }).map((_, i) => {
-            const v = STEP_VALUE * (totalSteps - i)
+          {Array.from({ length: totalSteps + 1 }).map((_: any, i: any) => {
+            const v: any = STEP_VALUE * (totalSteps - i)
             return <div key={i}>{v >= 1000 ? `${v / 1000}k` : v}</div>
           })}
         </YAxisContainer>
 
         <ChartScrollArea>
           <ChartInner>
-            {Array.from({ length: totalSteps + 1 }).map((_, i) => (
+            {Array.from({ length: totalSteps + 1 }).map((_: any, i: any) => (
               <GridLine key={i} style={{ top: (CHART_HEIGHT / totalSteps) * i }} />
             ))}
 
-            {/* ÚNICO GRÁFICO */}
             <BarsWrapper>
-              {chartData.map((m, idx) => (
+              {chartData.map((m: any, idx: any) => (
                 <MonthColumn key={idx}>
                   <MonthBars>
-                    {productNames.map((name, colorIdx) => {
-                      const v = m[name] || 0
-                      const height = (v / (STEP_VALUE * totalSteps)) * CHART_HEIGHT
+                    {productNames.map((name: any, colorIdx: any) => {
+                      const v: any = m[name] || 0
+                      const height: any = (v / (STEP_VALUE * totalSteps)) * CHART_HEIGHT
 
                       return (
                         <BarWrapper key={colorIdx}>
                           <div style={{ height: `${height}px` }}>
-                            <Bar style={{ background: COLORS[colorIdx], height: '100%' }} />
+                            <Bar
+                              style={{
+                                background: COLORS[colorIdx],
+                                height: '100%',
+                              }}
+                            />
                           </div>
                         </BarWrapper>
                       )
@@ -90,16 +94,16 @@ export default function MonthlySalesChart({ data }) {
             </BarsWrapper>
           </ChartInner>
 
-          {/* LABELS + SOMA (sem barras duplicadas) */}
           <LabelsRow>
-            {chartData.map((m, idx) => (
+            {chartData.map((m: any, idx: any) => (
               <MonthColumn key={idx}>
                 <MonthLabel>{m.month}</MonthLabel>
+
                 <TotalAbove>{monthlyTotals[idx] > 0 ? fmtBRL(monthlyTotals[idx]) : '-'}</TotalAbove>
 
                 <ValuesBelow>
-                  {productNames.map((name, ci) => {
-                    const value = m[name]
+                  {productNames.map((name: any, ci: any) => {
+                    const value: any = m[name]
 
                     return (
                       <div key={ci} style={{ color: COLORS[ci] }}>
