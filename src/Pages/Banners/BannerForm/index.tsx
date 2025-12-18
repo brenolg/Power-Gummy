@@ -2,6 +2,8 @@ import { FormProvider, useForm, type Resolver } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { MainButton, MInput } from '@/components'
 import FileInput from '@/components/form/FileInput'
+import { signInAnonymously } from 'firebase/auth'
+import { auth } from './firebaseClient'
 
 import { useFetch } from '@/hooks/useFetch'
 import {
@@ -16,9 +18,10 @@ import {
 } from './styles'
 import { schema } from './schema'
 import { uploadBannerImage } from './helper'
+import { useEffect, useState } from 'react'
 
 /* =========================
-   TIPAGEM DO FORM
+  TIPAGEM DO FORM
 ========================= */
 export type BannerFormData = {
   desktopImage: File
@@ -28,6 +31,7 @@ export type BannerFormData = {
 
 export default function BannerForm() {
   const { fetcher } = useFetch()
+  const [loading, setLoading] = useState(false)
 
   const methods = useForm<BannerFormData>({
     resolver: yupResolver(schema) as Resolver<BannerFormData>,
@@ -54,6 +58,7 @@ export default function BannerForm() {
     }
 
     try {
+      setLoading(true)
       // 🔼 Upload dos dois arquivos
       const [desktopImageUrl, mobileImageUrl] = await Promise.all([
         uploadBannerImage(desktopFile, 'desktop'),
@@ -75,6 +80,8 @@ export default function BannerForm() {
       console.log('Banner criado com sucesso')
     } catch (error) {
       console.error('Erro ao enviar banner:', error)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -85,6 +92,21 @@ export default function BannerForm() {
     if (Array.isArray(value)) return value[0]
     return null
   }
+
+  useEffect(() => {
+    const login = async () => {
+      try {
+        if (!auth.currentUser) {
+          await signInAnonymously(auth)
+          console.log('Firebase auth OK')
+        }
+      } catch (error) {
+        console.error('Erro ao autenticar no Firebase:', error)
+      }
+    }
+
+    login()
+  }, [])
 
   const desktopValue = methods.watch('desktopImage')
   const desktopFile = getFileFromValue(desktopValue)
@@ -168,7 +190,7 @@ export default function BannerForm() {
           <div style={{ maxWidth: '315px' }}>
             <MInput name="context" type="text" placeholder="Endereço" hasAsterisk mb={26} />
           </div>
-          <MainButton type="submit" maxW={180} font={14} height={50}>
+          <MainButton type="submit" maxW={180} font={14} height={50} loading={loading}>
             Criar Banner
           </MainButton>
         </form>

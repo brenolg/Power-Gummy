@@ -104,7 +104,7 @@ export default function Cupons() {
   ]
 
   // PATCH /admin/coupon/{COUPON_ID}
-  async function handleEditCoupon(edited: Banner) {
+  async function handleEditBanner(edited: Banner) {
     try {
       const body = {
         active: edited.active,
@@ -131,7 +131,7 @@ export default function Cupons() {
     }
   }
 
-  async function handleDeleteCoupon(item: Banner) {
+  async function handleDeleteBanner(item: Banner) {
     try {
       console.log('DELETE id:', item.id)
 
@@ -157,8 +157,8 @@ export default function Cupons() {
         key={item.id}
         item={item}
         index={i}
-        onEdit={handleEditCoupon}
-        onDelete={handleDeleteCoupon}
+        onEdit={handleEditBanner}
+        onDelete={handleDeleteBanner}
       />
     ))
   }
