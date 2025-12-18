@@ -202,7 +202,7 @@ export default function Banners() {
       </TableContainer>
 
       <Modal open={open} onClose={() => setOpen(false)} maxWidth="890px">
-        <BannerForm setData={setData} />
+        <BannerForm setData={setData} banners={data} setOpen={setOpen} />
       </Modal>
 
       <AuthModal />

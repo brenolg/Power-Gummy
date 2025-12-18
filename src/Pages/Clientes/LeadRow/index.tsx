@@ -123,7 +123,7 @@ export default function LeadRow({ item, index }: { item: any; index: any }) {
       {item.coupon?.length ? (
         item.coupon.map((c: any, i: number) => (
           <Tippy key={`coupon-${index}${i}`} content={c.code} theme="custom">
-            <span>{c.code}</span>
+            <span className="grid-item golden hidden">{c.code}</span>
           </Tippy>
         ))
       ) : (

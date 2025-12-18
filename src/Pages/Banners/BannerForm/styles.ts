@@ -96,6 +96,37 @@ export const FileCard = styled.div`
   }
 `
 
+export const ErrorMsg = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.3s ease-out;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--Vermelho-Alerta, #f00);
+  font-family: Inter;
+  font-size: 12px;
+  height: 12px;
+  width: 100%;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  display: flex;
+  padding: 2px 4px;
+  align-items: center;
+  gap: 4px;
+
+  white-space: normal;
+  word-break: break-word; /* força quebra dentro da palavra */
+  overflow-wrap: anywhere;
+  .img-error {
+    width: 12px;
+    height: 12px;
+  }
+`
+
 export const BannerPreview = styled.div`
   width: 100%;
   height: 214px;

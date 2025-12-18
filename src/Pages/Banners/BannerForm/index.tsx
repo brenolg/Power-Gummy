@@ -9,6 +9,7 @@ import { useFetch } from '@/hooks/useFetch'
 import {
   BannerPreview,
   CardsContainer,
+  ErrorMsg,
   FileCard,
   FileDescription,
   MainContainer,
@@ -32,12 +33,15 @@ export type BannerFormData = {
 import type { Banner } from '../index'
 
 type BannerFormProps = {
+  banners: Banner[]
   setData: React.Dispatch<React.SetStateAction<Banner[]>>
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export default function BannerForm({ setData }: BannerFormProps) {
+export default function BannerForm({ setData, banners, setOpen }: BannerFormProps) {
   const { fetcher } = useFetch()
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
 
   const methods = useForm<BannerFormData>({
     resolver: yupResolver(schema) as Resolver<BannerFormData>,
@@ -62,7 +66,7 @@ export default function BannerForm({ setData }: BannerFormProps) {
       console.error('Arquivos não encontrados')
       return
     }
-
+    setError('')
     try {
       setLoading(true)
       // 🔼 Upload dos dois arquivos
@@ -71,45 +75,57 @@ export default function BannerForm({ setData }: BannerFormProps) {
         uploadBannerImage(mobileFile, 'mobile'),
       ])
 
-      // 📦 Payload único
-      const payload = {
-        desktopImageUrl,
-        mobileImageUrl,
+      const desktopBody = {
+        imageUrl: desktopImageUrl,
+        device: 'desktop',
+        position: banners.length / 2 + 1,
         context: data.context,
       }
 
-      // 🚀 Chamada da API
-      await fetcher('/admin/banners', 'POST', {
-        body: payload,
-      })
+      const desktopRes = (await fetcher('/admin/banner', 'POST', {
+        body: desktopBody,
+      })) as any
+      console.log(desktopRes)
 
-      console.log('Banner criado com sucesso')
+      const mobileBody = {
+        imageUrl: mobileImageUrl,
+        device: 'mobile',
+        position: banners.length / 2 + 1,
+        context: data.context,
+      }
+
+      console.log(desktopBody)
+      const mobileRes = (await fetcher('/admin/banner', 'POST', {
+        body: mobileBody,
+      })) as any
 
       const now = new Date().toISOString()
 
       setData((prev) => [
         {
-          id: crypto.randomUUID(),
+          id: desktopRes.id,
           imageUrl: desktopImageUrl,
           device: 'desktop',
           context: data.context,
-          position: prev.length + 1,
+          position: banners.length / 2 + 1,
           active: true,
           createdAt: now,
         },
         {
-          id: crypto.randomUUID(),
+          id: mobileRes.id,
           imageUrl: mobileImageUrl,
           device: 'mobile',
           context: data.context,
-          position: prev.length + 1,
+          position: banners.length / 2 + 1,
           active: true,
           createdAt: now,
         },
         ...prev,
       ])
+      setOpen(false)
     } catch (error) {
       console.error('Erro ao enviar banner:', error)
+      setError('Erro ao enviar banner')
     } finally {
       setLoading(false)
     }
@@ -160,7 +176,7 @@ export default function BannerForm({ setData }: BannerFormProps) {
         >
           <CardsContainer>
             <FileCard>
-              <h2 className="title ">🖥 Computador / Desktop</h2>
+              <h2 className="title ">Computador / Desktop</h2>
               <p className="proportion">Proporção da imagem: 1440px x 620px </p>
 
               <FileInput
@@ -188,7 +204,7 @@ export default function BannerForm({ setData }: BannerFormProps) {
             </FileCard>
 
             <FileCard>
-              <h2 className="title ">📱Celular / Mobile</h2>
+              <h2 className="title ">Celular / Mobile</h2>
               <p className="proportion">Proporção da imagem: 435px x 620px </p>
 
               <FileInput
@@ -220,6 +236,7 @@ export default function BannerForm({ setData }: BannerFormProps) {
           <div style={{ maxWidth: '315px' }}>
             <MInput name="context" type="text" placeholder="Endereço" hasAsterisk mb={26} />
           </div>
+          <ErrorMsg>{error}</ErrorMsg>
           <MainButton type="submit" maxW={180} font={14} height={50} loading={loading}>
             Criar Banner
           </MainButton>
