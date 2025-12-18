@@ -11,6 +11,7 @@ import Table from '@/components/Table'
 import BannersRow from './BannersRow'
 import AuthModal from '@/components/AuthModal'
 import { useCoreData } from '@/context/coreDataContext'
+import BannerForm from './BannerForm'
 
 export type BannerDevice = 'mobile' | 'desktop'
 
@@ -192,8 +193,8 @@ export default function Cupons() {
         />
       </TableContainer>
 
-      <Modal open={open} onClose={() => setOpen(false)} maxWidth="754px">
-        <div>create </div>
+      <Modal open={open} onClose={() => setOpen(false)} maxWidth="1094px">
+        <BannerForm />
       </Modal>
 
       <AuthModal />
