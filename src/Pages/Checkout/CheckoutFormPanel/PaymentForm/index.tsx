@@ -96,13 +96,11 @@ export default function PaymentCardForm() {
     console.log(coupons)
     if (globalLoading) return
 
-    if (paymentMethod !== 'PIX') {
-      const isValid = await methods.trigger() // valida só no cartão
+    const isValid = await methods.trigger() // valida só no cartão
 
-      if (!isValid) {
-        console.error('Form inválido')
-        return
-      }
+    if (!isValid) {
+      console.error('Form inválido')
+      return
     }
 
     const data = methods.getValues()

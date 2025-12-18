@@ -40,15 +40,16 @@ export default function BannerForm() {
   })
 
   const handleSubmitForm = async (data: BannerFormData) => {
-    /* =========================
-       EXEMPLO COM FORMDATA
-    ========================= */
-    const formData = new FormData()
-    formData.append('desktopImage', data.desktopImage)
+    const isValid = await methods.trigger()
+
+    if (!isValid) {
+      console.error('Form inválido')
+      return
+    }
 
     try {
       await fetcher('/admin/banners', 'POST', {
-        body: formData,
+        body: data,
       })
     } catch (error) {
       console.error('Erro ao enviar banner:', error)
