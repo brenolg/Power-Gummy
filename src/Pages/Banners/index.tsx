@@ -121,9 +121,13 @@ export default function Cupons() {
       setData((prev) =>
         prev.map((coupon) => (coupon.id === edited.id ? { ...coupon, ...edited } : coupon))
       )
-    } catch (err) {
-      console.error('Erro ao atualizar cupom', err)
-      setShowAuth(true)
+    } catch (err: any) {
+      console.error('Erro ao atualizar cupom', err.status)
+      if (err.status === 401) {
+        setShowAuth(true)
+        return
+      }
+      alert(err)
     }
   }
 
@@ -135,9 +139,13 @@ export default function Cupons() {
 
       // remove da tela após sucesso
       setData((prev) => prev.filter((coupon) => coupon.id !== item.id))
-    } catch (err) {
+    } catch (err: any) {
       console.error('Erro ao excluir cupom', err)
-      setShowAuth(true)
+      if (err.status === 401) {
+        setShowAuth(true)
+        return
+      }
+      alert(err)
     }
   }
 
@@ -193,7 +201,7 @@ export default function Cupons() {
         />
       </TableContainer>
 
-      <Modal open={open} onClose={() => setOpen(false)} maxWidth="1094px">
+      <Modal open={open} onClose={() => setOpen(false)} maxWidth="890px">
         <BannerForm />
       </Modal>
 

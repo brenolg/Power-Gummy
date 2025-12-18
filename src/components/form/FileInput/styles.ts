@@ -1,40 +1,61 @@
 import styled from 'styled-components'
 
-export const UploadBox = styled.div<{ $error?: boolean }>`
-  border: 2px dashed ${({ $error }) => ($error ? '#FF4D4F' : '#E0E0E0')};
+export const UploadBox = styled.label<{ $error?: boolean }>`
+  border: 1px dashed ${({ $error }) => ($error ? '#F00' : '#ccc')};
   border-radius: 10px;
-  padding: 18px;
+  position: relative;
+
   cursor: pointer;
+  display: flex;
+  width: 315px;
+  height: 56px;
+  justify-content: center;
+  align-items: center;
   transition: border 0.2s;
+  border-radius: 5px;
 
   &:hover {
-    border-color: #c78a1b;
+    border-color: #ba7e1b;
   }
 `
 
-export const UploadLabel = styled.label`
+export const UploadLabel = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 315px;
+  padding: 16px 16px 16px 16px;
+  height: 56px;
+  gap: 10px;
   display: flex;
   align-items: center;
-  gap: 14px;
-  cursor: pointer;
-`
+  justify-content: space-between;
 
-export const UploadIcon = styled.div`
-  font-size: 22px;
+  cursor: pointer;
 `
 
 export const UploadText = styled.div`
   display: flex;
-  flex-direction: column;
-  font-size: 14px;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
 
   strong {
-    color: #555;
+    color: #757575;
+    font-family: Inter;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
   }
 
   span {
+    color: #ccc;
+
+    font-family: Inter;
     font-size: 12px;
-    color: #999;
+    font-style: normal;
+    font-weight: 400;
   }
 `
 

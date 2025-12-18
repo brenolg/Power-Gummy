@@ -1,8 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState, useId } from 'react'
 import { Controller, useFormContext } from 'react-hook-form'
 import { InputContainer, InputError } from '../FormCommomStyle'
-import { UploadBox, UploadLabel, UploadText, UploadIcon, FileName } from './styles'
+import { UploadBox, UploadLabel, UploadText } from './styles'
 import imgError from '@/assets/icons/error.svg'
+import fileIcon from '@/assets/icons/file.svg'
+import uploadIcon from '@/assets/icons/upload.svg'
 
 interface FileInputProps {
   name: string
@@ -21,6 +23,7 @@ const FileInput: React.FC<FileInputProps> = ({
 }) => {
   const { control, clearErrors } = useFormContext()
   const [fileName, setFileName] = useState<string | null>(null)
+  const inputId = useId()
 
   return (
     <InputContainer $mb={mb}>
@@ -32,32 +35,39 @@ const FileInput: React.FC<FileInputProps> = ({
 
           return (
             <>
-              <UploadBox $error={!!error}>
+              {/* O label controla o input */}
+              <UploadBox as="label" htmlFor={inputId} $error={!!error}>
                 <UploadLabel>
-                  <UploadIcon>📁</UploadIcon>
+                  <img src={fileIcon} alt="" />
 
                   <UploadText>
-                    <strong>{label}</strong>
+                    <strong>{fileName || label}</strong>
                     <span>Máx: {maxSizeMB}MB</span>
                   </UploadText>
 
-                  <input
-                    type="file"
-                    hidden
-                    accept={accept}
-                    onChange={(e) => {
-                      const file = e.target.files?.[0]
-                      if (!file) return
-
-                      setFileName(file.name)
-                      clearErrors(name)
-                      field.onChange(file)
-                    }}
-                  />
+                  <img src={uploadIcon} alt="" />
                 </UploadLabel>
-              </UploadBox>
+                {/* input hidden mas funcional */}
+                <input
+                  id={inputId}
+                  type="file"
+                  hidden
+                  accept={accept}
+                  onChange={(e) => {
+                    const files = e.target.files
+                    if (!files || !files.length) return
 
-              {fileName && <FileName>{fileName}</FileName>}
+                    setFileName(files[0].name)
+                    clearErrors(name)
+
+                    // 🔴 NÃO passe files[0]
+                    // field.onChange(files[0])
+
+                    // ✅ passe o FileList
+                    field.onChange(files)
+                  }}
+                />
+              </UploadBox>
 
               <InputError $error={!!error}>
                 {error && (
