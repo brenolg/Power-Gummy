@@ -83,7 +83,7 @@ export const TableContent = styled.div<Style>`
     text-overflow: ellipsis;
     min-width: 0;
     padding-right: 10px;
-    img {
+    .platform {
       height: 40px;
     }
   }

@@ -95,7 +95,7 @@ export default function BannersRow({ item, index, onEdit, onDelete }: BannersRow
     </div>,
 
     <div key={`preview-${index}`} className="grid-item">
-      <img src={item.imageUrl} />
+      <img src={item.imageUrl} className="platform" />
     </div>,
 
     <div key={`context-${index}`} className={`grid-item ${!showEdit ? 'hidden' : ''}`}>

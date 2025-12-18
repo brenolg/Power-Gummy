@@ -15,6 +15,7 @@ import {
   SubTtile,
 } from './styles'
 import { schema } from './schema'
+import { uploadBannerImage } from './helper'
 
 /* =========================
    TIPAGEM DO FORM
@@ -42,15 +43,36 @@ export default function BannerForm() {
   const handleSubmitForm = async (data: BannerFormData) => {
     const isValid = await methods.trigger()
 
-    if (!isValid) {
-      console.error('Form inválido')
+    if (!isValid) return
+
+    const desktopFile = getFileFromValue(data.desktopImage)
+    const mobileFile = getFileFromValue(data.mobileImage)
+
+    if (!desktopFile || !mobileFile) {
+      console.error('Arquivos não encontrados')
       return
     }
 
     try {
+      // 🔼 Upload dos dois arquivos
+      const [desktopImageUrl, mobileImageUrl] = await Promise.all([
+        uploadBannerImage(desktopFile, 'desktop'),
+        uploadBannerImage(mobileFile, 'mobile'),
+      ])
+
+      // 📦 Payload único
+      const payload = {
+        desktopImageUrl,
+        mobileImageUrl,
+        context: data.context,
+      }
+
+      // 🚀 Chamada da API
       await fetcher('/admin/banners', 'POST', {
-        body: data,
+        body: payload,
       })
+
+      console.log('Banner criado com sucesso')
     } catch (error) {
       console.error('Erro ao enviar banner:', error)
     }
