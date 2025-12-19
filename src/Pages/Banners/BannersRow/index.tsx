@@ -1,7 +1,7 @@
 // CouponRow.tsx
 import editIcon from '@/assets/icons/edit.svg'
 import trash from '@/assets/icons/trash.svg'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { FakeInput } from '@/components/form/FakeInput'
 import type { Banner } from '..' // ajusta o caminho se o index estiver em outra pasta
 import {
@@ -23,8 +23,15 @@ import mobileIcon from '@/assets/imgs/mobile.svg'
 interface BannersRowProps {
   item: Banner
   index: number
-  onEdit: (item: Banner) => void
+  onEdit: (payload: BannerEditPayload) => void
   onDelete: (item: Banner) => void
+}
+
+type BannerEditPayload = {
+  id: string
+  position?: number
+  context?: string
+  active?: boolean
 }
 
 export default function BannersRow({ item, index, onEdit, onDelete }: BannersRowProps) {
@@ -34,19 +41,26 @@ export default function BannersRow({ item, index, onEdit, onDelete }: BannersRow
   const [context, setContext] = useState(item.context ?? '')
   const [active, setActive] = useState(item.active)
   const [openPosition, setOpenPosition] = useState(false)
+  const [payload, setPayload] = useState<BannerEditPayload | null>(null)
 
   const handleConfirm = () => {
-    const edited: Banner = {
-      ...item, // mantém id, active, createdAt, usageCount
-      position,
-      context: context || '',
-      active,
-    }
-    console.log('EDITED', edited)
-
-    onEdit(edited)
+    if (!payload) return
+    onEdit(payload)
     setShowEdit(false)
   }
+
+  useEffect(() => {
+    if (showEdit) {
+      const edit: Partial<Banner> & { id: string } = {
+        id: item.id,
+      }
+      if (item.position !== position) edit.position = position
+      if (item.context !== context) edit.context = context
+      if (item.active !== active) edit.active = active
+      console.log(edit, item, active)
+      setPayload(edit)
+    }
+  }, [active, position, context])
 
   return [
     <div key={`index-${index}`} className="grid-index">
@@ -89,8 +103,8 @@ export default function BannersRow({ item, index, onEdit, onDelete }: BannersRow
 
     <div key={`format-${index}`} className="grid-item">
       <DeviceLabel>
-        <img src={item.device === 'mobile' ? mobileIcon : desktopIcon} alt={item.device} />
-        {item.device === 'mobile' ? 'Mobile' : 'Desktop'}
+        <img src={item.platform === 'mobile' ? mobileIcon : desktopIcon} alt={item.platform} />
+        {item.platform === 'mobile' ? 'Mobile' : 'Desktop'}
       </DeviceLabel>
     </div>,
 

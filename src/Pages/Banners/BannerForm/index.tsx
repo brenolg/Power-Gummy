@@ -77,7 +77,7 @@ export default function BannerForm({ setData, banners, setOpen }: BannerFormProp
 
       const desktopBody = {
         imageUrl: desktopImageUrl,
-        device: 'desktop',
+        platform: 'desktop',
         position: banners.length / 2 + 1,
         context: data.context,
       }
@@ -89,7 +89,7 @@ export default function BannerForm({ setData, banners, setOpen }: BannerFormProp
 
       const mobileBody = {
         imageUrl: mobileImageUrl,
-        device: 'mobile',
+        platform: 'mobile',
         position: banners.length / 2 + 1,
         context: data.context,
       }
@@ -105,7 +105,7 @@ export default function BannerForm({ setData, banners, setOpen }: BannerFormProp
         {
           id: desktopRes.id,
           imageUrl: desktopImageUrl,
-          device: 'desktop',
+          platform: 'desktop',
           context: data.context,
           position: banners.length / 2 + 1,
           active: true,
@@ -114,7 +114,7 @@ export default function BannerForm({ setData, banners, setOpen }: BannerFormProp
         {
           id: mobileRes.id,
           imageUrl: mobileImageUrl,
-          device: 'mobile',
+          platform: 'mobile',
           context: data.context,
           position: banners.length / 2 + 1,
           active: true,

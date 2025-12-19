@@ -21,7 +21,7 @@ export type Banner = {
   createdAt: string
   active: boolean
   position: number
-  device: BannerDevice
+  platform: BannerDevice
   context: string
 }
 
@@ -33,32 +33,6 @@ export default function Banners() {
   const [open, setOpen] = useState(false)
   const [page, setPage] = useState(1)
 
-  type DeviceType = 'mobile' | 'desktop'
-
-  function detectDeviceByAspectRatio(width: number, height: number): DeviceType {
-    const ratio = width / height
-
-    if (ratio < 1) return 'mobile' // vertical
-    if (ratio >= 1.3) return 'desktop' // horizontal
-
-    return 'desktop'
-  }
-
-  function getImageDevice(imageUrl: string): Promise<DeviceType> {
-    return new Promise((resolve) => {
-      const img = new Image()
-      img.src = imageUrl
-
-      img.onload = () => {
-        resolve(detectDeviceByAspectRatio(img.width, img.height))
-      }
-
-      img.onerror = () => {
-        resolve('desktop') // fallback seguro
-      }
-    })
-  }
-
   useEffect(() => {
     async function load() {
       try {
@@ -66,18 +40,8 @@ export default function Banners() {
 
         const res = (await fetcher('/admin/banners', 'GET')) as Banner[]
 
-        const enriched = await Promise.all(
-          res.map(async (item) => {
-            const device = await getImageDevice(item.imageUrl)
-
-            return {
-              ...item,
-              device, // 👈 chave adicionada aqui
-            }
-          })
-        )
-        console.log(enriched)
-        setData(enriched)
+        console.log(res)
+        setData(res)
       } catch (error) {
         console.error('Erro ao carregar Banners:', error)
         setShowAuth(true)
@@ -103,31 +67,32 @@ export default function Banners() {
     'ação',
   ]
 
+  type BannerEditPayload = {
+    id: string
+    position?: number
+    context?: string
+    active?: boolean
+  }
   // PATCH /admin/coupon/{COUPON_ID}
-  async function handleEditBanner(edited: Banner) {
+  async function handleEditBanner(payload: BannerEditPayload) {
+    console.log('Edit')
     try {
-      const body = {
-        active: edited.active,
-        context: edited.context ?? '',
-        position: edited.position,
-        // ✅ sempre manda string
-      }
       //,
-      console.log('PATCH id:', edited.id)
-      console.log('BODY PATCH', body)
 
-      await fetcher(`/admin/banner/${edited.id}`, 'PATCH', { body })
+      const x = await fetcher(`/admin/banner/${payload.id}`, 'PATCH', { body: payload })
+      console.log(x)
 
       setData((prev) =>
-        prev.map((coupon) => (coupon.id === edited.id ? { ...coupon, ...edited } : coupon))
+        prev.map((banner) => (banner.id === payload.id ? { ...banner, ...payload } : banner))
       )
     } catch (err: any) {
-      console.error('Erro ao atualizar cupom', err.status)
+      console.error('Erro ao atualizar banner', err)
       if (err.status === 401) {
         setShowAuth(true)
         return
       }
-      alert(err)
+
+      alert(err.payload.error)
     }
   }
 
@@ -140,12 +105,12 @@ export default function Banners() {
       // remove da tela após sucesso
       setData((prev) => prev.filter((coupon) => coupon.id !== item.id))
     } catch (err: any) {
-      console.error('Erro ao excluir cupom', err)
+      console.error('Erro ao excluir banner', err)
       if (err.status === 401) {
         setShowAuth(true)
         return
       }
-      alert(err)
+      alert(err.payload.error)
     }
   }
 
@@ -177,7 +142,7 @@ export default function Banners() {
       <TableContainer>
         <BannersContainer>
           {data
-            .filter((item) => item.active && item.device === 'desktop')
+            .filter((item) => item.active && item.platform === 'desktop')
             .sort((a, b) => a.position - b.position)
             .map((item) => (
               <img key={item.id} src={item.imageUrl} alt={`Banner ${item.position}`} />
