@@ -9,7 +9,7 @@ import PageLoading from '@/components/PageLoading'
 
 export default function Checkout() {
   const location = useLocation()
-  const { setFormStep, setFormData, setCoupons, setCartStorage, setFormPostalCode } = useCoreData()
+  const { setFormStep, setFormData, setCoupons, setFormPostalCode, setCart } = useCoreData()
   const params = new URLSearchParams(location.search)
   const id = params.get('id')
 
@@ -40,7 +40,7 @@ export default function Checkout() {
           setCoupons(normalized)
         }
         if (data.cartItems) {
-          setCartStorage(data.cartItems)
+          setCart(data.cartItems)
         }
         setFormStep(0)
         if (data.email) {
