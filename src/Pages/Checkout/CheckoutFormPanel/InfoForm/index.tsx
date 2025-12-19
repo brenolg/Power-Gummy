@@ -15,7 +15,7 @@ export type CheckoutFormData = {
 }
 
 export default function InfoForm() {
-  const { setFormStep, setFormData, coupons, formData, cartStorage } = useCoreData()
+  const { setFormStep, setFormData, coupons, formData, cart } = useCoreData()
   const { fetcher } = useFetch()
 
   const methods = useForm<CheckoutFormData>({
@@ -31,14 +31,19 @@ export default function InfoForm() {
   })
 
   const handleStep = async () => {
+    console.log(cart)
     const isValid = await methods.trigger() // valida todos os campos
-
     if (!isValid) {
       console.error('Form inválido')
       return // impede avanço
     }
 
     const data = methods.getValues()
+
+    const minimalCart = cart.map((item) => ({
+      productId: item.productId,
+      quantity: item.quantity,
+    }))
 
     const coupom = await coupons[0]
     if (data.advertisement) {
@@ -47,7 +52,7 @@ export default function InfoForm() {
         phone: data.phone,
         name: data.name,
         total: formData.total,
-        cartItems: cartStorage,
+        cartItems: minimalCart,
         ...(coupom && {
           coupon: {
             code: coupom.code,

@@ -60,9 +60,6 @@ type CoreDataContextProps = {
   formPostalCode: string
   setFormPostalCode: React.Dispatch<React.SetStateAction<string>>
 
-  cartStorage: MinimalCartItem[]
-  setCartStorage: React.Dispatch<React.SetStateAction<MinimalCartItem[]>>
-
   globalLoading: boolean
   setGlobalLoading: React.Dispatch<React.SetStateAction<boolean>>
 

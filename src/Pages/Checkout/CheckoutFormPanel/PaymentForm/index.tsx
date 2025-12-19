@@ -26,7 +26,6 @@ export default function PaymentCardForm() {
   const {
     paymentMethod,
     formData,
-    cartStorage,
     setFormStep,
     setFormData,
     globalLoading,
@@ -34,6 +33,7 @@ export default function PaymentCardForm() {
     shipping,
     setGlobalLoading,
     setJuros,
+    cart,
   } = useCoreData()
 
   const installmentsOptions = [
@@ -108,7 +108,11 @@ export default function PaymentCardForm() {
       setGlobalLoading(true)
       setError('')
       const filteredCoupons = coupons.filter((c) => c.code !== 'PIX05')
-      const filteredItems = cartStorage.filter((item) => item.quantity > 0)
+      const minimalCart = cart.map((item) => ({
+        productId: item.productId,
+        quantity: item.quantity,
+      }))
+      const filteredItems = minimalCart.filter((item) => item.quantity > 0)
 
       let month = ''
       let year4 = ''
@@ -192,7 +196,7 @@ export default function PaymentCardForm() {
             addressComplement: formData.addressComplement,
           },
           document: data.cpf,
-          cartItems: cartStorage,
+          cartItems: minimalCart,
           paymentMethod: paymentMethod,
         }
 

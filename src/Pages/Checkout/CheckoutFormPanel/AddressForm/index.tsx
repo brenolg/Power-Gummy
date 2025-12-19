@@ -21,8 +21,7 @@ export type CheckoutFormData = {
 }
 
 export default function AddressForm() {
-  const { cartStorage, setFormPostalCode, setFormData, formData, coupons, setFormStep } =
-    useCoreData()
+  const { setFormPostalCode, setFormData, formData, coupons, setFormStep, cart } = useCoreData()
   const { fetcher } = useFetch()
 
   const methods = useForm<CheckoutFormData>({
@@ -49,6 +48,11 @@ export default function AddressForm() {
 
     const data = methods.getValues()
 
+    const minimalCart = cart.map((item) => ({
+      productId: item.productId,
+      quantity: item.quantity,
+    }))
+
     const coupom = coupons[0]
     if (formData.advertisement) {
       const body = {
@@ -71,7 +75,7 @@ export default function AddressForm() {
           state: data.state,
           addressComplement: data.addressComplement,
         },
-        cartItems: cartStorage,
+        cartItems: minimalCart,
       }
 
       fetcher('/public/capture-lead', 'POST', { body })

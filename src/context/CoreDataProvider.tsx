@@ -23,54 +23,40 @@ export default function CoreDataProvider({ children }: { children: ReactNode }) 
   const [openCart, setOpenCart] = useState(false)
   const [showAuth, setShowAuth] = useState(false)
 
+  // Minimal → armazenado no localStorage
   const CART_KEY = 'powergummy.cart'
 
-  // Minimal → armazenado no localStorage
-  const [cartStorage, setCartStorage] = useState<MinimalCartItem[]>(() => {
+  const [cart, setCart] = useState<CartItem[]>(() => {
     try {
       const stored = localStorage.getItem(CART_KEY)
       const parsed = stored ? JSON.parse(stored) : []
 
-      // 🔥 Garantir que SEMPRE volte um array
-      return Array.isArray(parsed) ? parsed : []
+      if (!Array.isArray(parsed)) return []
+
+      return parsed
+        .map((item: MinimalCartItem) => {
+          const base = CartItemsData.find((p) => p.productId === item.productId)
+          if (!base) return null
+          return { ...base, quantity: item.quantity }
+        })
+        .filter(Boolean) as CartItem[]
     } catch {
       return []
     }
   })
 
-  // Cart completo (usado internamente)
-  const [cart, setCart] = useState<CartItem[]>(() => {
-    if (!cartStorage.length) return []
-    return cartStorage
-      .map((item) => {
-        const base = CartItemsData.find((p) => p.productId === item.productId)
-        if (!base) return null
-        return { ...base, quantity: item.quantity }
-      })
-      .filter(Boolean) as CartItem[]
-  })
-
-  // 🚀 Rehidrata cart toda vez que cartStorage muda
   useEffect(() => {
-    const full = cartStorage
-      .map((item) => {
-        const base = CartItemsData.find((p) => p.productId === item.productId)
-        if (!base) return null
-        return { ...base, quantity: item.quantity }
-      })
-      .filter(Boolean) as CartItem[]
+    const minimal: MinimalCartItem[] = cart.map((item) => ({
+      productId: item.productId,
+      quantity: item.quantity,
+    }))
 
-    setCart(full)
-  }, [cartStorage])
-
-  // 💾 Salva no localStorage SEM criar loop
-  useEffect(() => {
     try {
-      localStorage.setItem(CART_KEY, JSON.stringify(cartStorage))
+      localStorage.setItem(CART_KEY, JSON.stringify(minimal))
     } catch {
-      console.log('x')
+      console.log('erro ao salvar carrinho')
     }
-  }, [cartStorage])
+  }, [cart])
 
   return (
     <CoreDataContext.Provider
@@ -85,8 +71,7 @@ export default function CoreDataProvider({ children }: { children: ReactNode }) 
         setFormStep,
         formPostalCode,
         setFormPostalCode,
-        cartStorage,
-        setCartStorage, // ← use SEMPRE esse para manipular carrinho
+
         globalLoading,
         setGlobalLoading,
         formData,
