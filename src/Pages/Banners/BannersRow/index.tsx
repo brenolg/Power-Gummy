@@ -44,9 +44,9 @@ export default function BannersRow({ item, index, onEdit, onDelete }: BannersRow
   const [payload, setPayload] = useState<BannerEditPayload | null>(null)
 
   const handleConfirm = () => {
+    setShowEdit(false)
     if (!payload) return
     onEdit(payload)
-    setShowEdit(false)
   }
 
   useEffect(() => {
