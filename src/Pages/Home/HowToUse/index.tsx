@@ -2,6 +2,7 @@ import { Wrapper, LeftBox, Title, List, VideoBox, BearImage } from './styles'
 import { MainButton } from '@/components'
 import defaultScrollProps from '@/utils/defaultScrollProps'
 import { scroller } from 'react-scroll'
+import poster from '@/assets/imgs/posterBlogueira.png'
 
 export default function HowToUse() {
   return (
@@ -35,6 +36,7 @@ export default function HowToUse() {
         <video
           src="https://firebasestorage.googleapis.com/v0/b/powergummy-prod.firebasestorage.app/o/howToUse.mp4?alt=media&token=68125583-25d5-4aa8-8010-9a0a03bc3c6e"
           controls
+          poster={poster}
         />
       </VideoBox>
     </Wrapper>
