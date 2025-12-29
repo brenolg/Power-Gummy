@@ -25,7 +25,7 @@ export default function BenefitsSection() {
       </HeaderText>
 
       <SubText>
-        <strong>É Cuidado 3 em 1.</strong> Somos a evolução e em gomas de beleza
+        <strong>É Cuidado 3 em 1.</strong> Somos a evolução em gomas de beleza
       </SubText>
 
       <PurposeTitle>
