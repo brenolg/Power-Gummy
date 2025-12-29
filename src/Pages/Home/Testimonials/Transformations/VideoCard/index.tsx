@@ -12,16 +12,14 @@ export default function VideoCard({ videoUrl, text }: Props) {
   const [showThumb, setShowThumb] = useState(true)
 
   const handleClick = () => {
-    if (!videoRef.current) return
-
     const video = videoRef.current
+    if (!video) return
 
-    // sempre garantir som ativo
     video.muted = false
     video.volume = 1
 
     if (video.paused || video.ended) {
-      void video.play()
+      video.play()
       setShowThumb(false)
     } else {
       video.pause()
@@ -29,6 +27,25 @@ export default function VideoCard({ videoUrl, text }: Props) {
       setShowThumb(true)
     }
   }
+
+  // 🔥 força render do primeiro frame no iOS
+  useEffect(() => {
+    const video = videoRef.current
+    if (!video) return
+
+    video.muted = true
+    video.playsInline = true
+
+    const playPromise = video.play()
+    if (playPromise !== undefined) {
+      playPromise
+        .then(() => {
+          video.pause() // 👈 ESSENCIAL
+          video.currentTime = 0
+        })
+        .catch(() => {})
+    }
+  }, [])
 
   useEffect(() => {
     const video = videoRef.current
@@ -47,7 +64,7 @@ export default function VideoCard({ videoUrl, text }: Props) {
 
   return (
     <Card onClick={handleClick}>
-      <Video ref={videoRef} src={videoUrl} preload="metadata" playsInline />
+      <Video ref={videoRef} src={videoUrl} preload="auto" muted playsInline />
 
       {showThumb && (
         <>
