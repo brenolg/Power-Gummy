@@ -23,6 +23,7 @@ export type CheckoutFormData = {
 export default function PaymentCardForm() {
   const [error, setError] = useState('')
   const { fetcher } = useFetch()
+
   const {
     paymentMethod,
     formData,
@@ -112,7 +113,6 @@ export default function PaymentCardForm() {
         productId: item.productId,
         quantity: item.quantity,
       }))
-      const filteredItems = minimalCart.filter((item) => item.quantity > 0)
 
       let month = ''
       let year4 = ''
@@ -141,7 +141,7 @@ export default function PaymentCardForm() {
           coupon: filteredCoupons[0].code,
         }),
 
-        items: filteredItems,
+        items: await minimalCart,
 
         shipping: shipping?.valor,
         paymentMethod: paymentMethod,
@@ -170,6 +170,7 @@ export default function PaymentCardForm() {
           installmentValue: Number((Number(formData.total) / Number(data.installments)).toFixed(2)),
         }),
       }
+
       console.log('body create order', body)
       const res: any = await fetcher('/public/create-order', 'POST', { body })
 
@@ -223,6 +224,7 @@ export default function PaymentCardForm() {
         error?.response?.data?.error || error?.response?.data?.message || error?.message
 
       setError(backendMessage || 'Erro inesperado ao processar o pedido.')
+
       setTimeout(() => {
         setError('')
       }, 5000)

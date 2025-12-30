@@ -27,6 +27,22 @@ export default function CoreDataProvider({ children }: { children: ReactNode }) 
   const [cart, setCart] = useState<CartItem[]>([])
   const [hydrated, setHydrated] = useState(false) // ✅ flag
 
+  const safeGetItem = (key: string) => {
+    try {
+      return localStorage.getItem(key)
+    } catch {
+      return null
+    }
+  }
+
+  const safeSetItem = (key: string, value: string) => {
+    try {
+      localStorage.setItem(key, value)
+    } catch {
+      console.log()
+    }
+  }
+
   /* ===========================
     HIDRATAÇÃO DO CARRINHO
   ============================ */
@@ -34,7 +50,7 @@ export default function CoreDataProvider({ children }: { children: ReactNode }) 
     try {
       if (typeof window === 'undefined') return
 
-      const stored = localStorage.getItem(CART_KEY)
+      const stored = safeGetItem(CART_KEY)
       const parsed = stored ? JSON.parse(stored) : []
 
       if (!Array.isArray(parsed)) {
@@ -62,18 +78,21 @@ export default function CoreDataProvider({ children }: { children: ReactNode }) 
     PERSISTÊNCIA NO STORAGE
   ============================ */
   useEffect(() => {
-    if (!hydrated) return // ⛔ não salva antes de hidratar
+    if (!hydrated) return
 
-    const minimal: MinimalCartItem[] = cart.map((item) => ({
-      productId: item.productId,
-      quantity: item.quantity,
-    }))
-
-    try {
-      localStorage.setItem(CART_KEY, JSON.stringify(minimal))
-    } catch {
-      console.log('erro ao salvar carrinho')
+    if (cart.length === 0) {
+      const alreadyStored = safeGetItem(CART_KEY)
+      if (alreadyStored) return // ⛔ não apaga no mobile
     }
+
+    const minimal = cart
+      .filter((item) => item.quantity > 0)
+      .map((item) => ({
+        productId: item.productId,
+        quantity: item.quantity,
+      }))
+
+    safeSetItem(CART_KEY, JSON.stringify(minimal))
   }, [cart, hydrated])
 
   return (

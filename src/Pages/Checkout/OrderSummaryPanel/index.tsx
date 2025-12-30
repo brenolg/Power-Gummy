@@ -1,6 +1,6 @@
 import { PageTitle, ProductContainer } from '../styles'
 import { ProductCartItem } from './ProductCartItem'
-import { CartContainer, EmptyContainer } from './styles'
+import { CartContainer, EmptyContainer, MobileSummary } from './styles'
 import { DiscountCoupons } from './DiscountCoupons'
 import { useCoreData } from '@/context/coreDataContext'
 import OrderSummary from './OrderSummary'
@@ -119,7 +119,7 @@ export default function OrderSummaryPanel() {
           </div>
 
           {/* Conteúdo interno */}
-          {openMobileSummary && (
+          <MobileSummary $open={openMobileSummary}>
             <div style={{ marginTop: 20, maxWidth: 420, margin: 'auto', padding: 24 }}>
               <CartContainer className="cart">
                 {cart.map((item) => (
@@ -139,7 +139,7 @@ export default function OrderSummaryPanel() {
 
               <OrderSummary />
             </div>
-          )}
+          </MobileSummary>
         </div>
       )}
     </>

@@ -136,9 +136,7 @@ export default function OrderSummary({ couponMode = 'sum' }: Props) {
   }
 
   useEffect(() => {
-    if (formPostalCode.length) {
-      calcularFrete()
-    }
+    calcularFrete()
   }, [formPostalCode, cart]) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (

@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 
 export const CartContainer = styled.div`
   display: flex;
@@ -29,4 +29,19 @@ export const EmptyContainer = styled.div`
     font-weight: 400;
     line-height: normal;
   }
-`;
+`
+export const MobileSummary = styled.div<{ $open: boolean }>`
+  width: 100%;
+  max-width: 420px;
+  margin: 0 auto;
+
+  height: ${({ $open }) => ($open ? '100%' : '0')};
+  overflow: hidden;
+
+  opacity: ${({ $open }) => ($open ? 1 : 0)};
+  pointer-events: ${({ $open }) => ($open ? 'auto' : 'none')};
+
+  transition:
+    height 0.35s ease,
+    opacity 0.25s ease;
+`
