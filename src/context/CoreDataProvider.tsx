@@ -23,29 +23,47 @@ export default function CoreDataProvider({ children }: { children: ReactNode }) 
   const [openCart, setOpenCart] = useState(false)
   const [showAuth, setShowAuth] = useState(false)
 
-  // Minimal → armazenado no localStorage
   const CART_KEY = 'powergummy.cart'
+  const [cart, setCart] = useState<CartItem[]>([])
+  const [hydrated, setHydrated] = useState(false) // ✅ flag
 
-  const [cart, setCart] = useState<CartItem[]>(() => {
+  /* ===========================
+    HIDRATAÇÃO DO CARRINHO
+  ============================ */
+  useEffect(() => {
     try {
+      if (typeof window === 'undefined') return
+
       const stored = localStorage.getItem(CART_KEY)
       const parsed = stored ? JSON.parse(stored) : []
 
-      if (!Array.isArray(parsed)) return []
+      if (!Array.isArray(parsed)) {
+        setHydrated(true)
+        return
+      }
 
-      return parsed
+      const hydratedCart = parsed
         .map((item: MinimalCartItem) => {
           const base = CartItemsData.find((p) => p.productId === item.productId)
           if (!base) return null
           return { ...base, quantity: item.quantity }
         })
-        .filter(Boolean) as CartItem[]
-    } catch {
-      return []
-    }
-  })
+        .filter((item): item is CartItem => item !== null)
 
+      setCart(hydratedCart)
+    } catch (err) {
+      console.warn('Erro ao carregar carrinho', err)
+    } finally {
+      setHydrated(true)
+    }
+  }, [])
+
+  /* ===========================
+    PERSISTÊNCIA NO STORAGE
+  ============================ */
   useEffect(() => {
+    if (!hydrated) return // ⛔ não salva antes de hidratar
+
     const minimal: MinimalCartItem[] = cart.map((item) => ({
       productId: item.productId,
       quantity: item.quantity,
@@ -56,7 +74,7 @@ export default function CoreDataProvider({ children }: { children: ReactNode }) 
     } catch {
       console.log('erro ao salvar carrinho')
     }
-  }, [cart])
+  }, [cart, hydrated])
 
   return (
     <CoreDataContext.Provider
@@ -64,14 +82,13 @@ export default function CoreDataProvider({ children }: { children: ReactNode }) 
         paymentMethod,
         setPaymentMethod,
         cart,
-        setCart, // ← você usa raramente (ex: limpar carrinho inteiro)
+        setCart,
         coupons,
         setCoupons,
         formStep,
         setFormStep,
         formPostalCode,
         setFormPostalCode,
-
         globalLoading,
         setGlobalLoading,
         formData,

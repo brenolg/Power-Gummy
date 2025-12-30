@@ -46,7 +46,7 @@ const depoimentos: Depoimento[] = [
     after:
       'https://firebasestorage.googleapis.com/v0/b/powergummy-prod.firebasestorage.app/o/after3.png?alt=media&token=87179d9f-7c56-48b8-8f79-59a4b6198e6a',
     label: 'Cabelos Fortes',
-    time: '3 mese',
+    time: '3 meses',
   },
 
   {
