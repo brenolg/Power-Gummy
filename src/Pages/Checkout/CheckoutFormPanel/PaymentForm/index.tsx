@@ -123,7 +123,8 @@ export default function PaymentCardForm() {
         year4 = `20${y}`
       }
 
-      const body = {
+      const bodyCreateOrder = {
+        leadId: formData.leadId,
         customerData: {
           name: formData.name,
           email: formData.email,
@@ -171,39 +172,39 @@ export default function PaymentCardForm() {
         }),
       }
 
-      console.log('body create order', body)
-      const res: any = await fetcher('/public/create-order', 'POST', { body })
+      const res: any = await fetcher('/public/create-order', 'POST', {
+        body: bodyCreateOrder,
+      })
+      console.log('CREATE ', bodyCreateOrder)
 
-      if (formData.advertisement) {
-        const coupom = coupons.find((c) => !c.code.startsWith('PIX'))
-        const body = {
-          email: formData.email,
-          phone: formData.phone,
-          name: formData.name,
-          total: formData.total,
-          ...(coupom && {
-            coupon: {
-              code: coupom.code,
-              discountValue: coupom.discount,
-            },
-          }),
-          address: {
-            cep: formData.postalCode,
-            street: formData.address,
-            number: formData.addressNumber,
-            neighborhood: formData.district,
-            city: formData.city,
-            state: formData.state,
-            addressComplement: formData.addressComplement,
+      const coupom = coupons.find((c) => !c.code.startsWith('PIX'))
+      const body = {
+        email: formData.email,
+        phone: formData.phone,
+        name: formData.name,
+        total: formData.total,
+        ...(coupom && {
+          coupon: {
+            code: coupom.code,
+            discountValue: coupom.discount,
           },
-          document: data.cpf,
-          cartItems: minimalCart,
-          paymentMethod: paymentMethod,
-        }
-
-        const x = await fetcher('/public/capture-lead', 'POST', { body })
-        console.log('lead payform', x)
+        }),
+        address: {
+          cep: formData.postalCode,
+          street: formData.address,
+          number: formData.addressNumber,
+          neighborhood: formData.district,
+          city: formData.city,
+          state: formData.state,
+          addressComplement: formData.addressComplement,
+        },
+        document: data.cpf,
+        cartItems: minimalCart,
+        paymentMethod: paymentMethod,
       }
+
+      const x = await fetcher('/public/capture-lead', 'POST', { body })
+      console.log('lead payform', x)
 
       if (paymentMethod === 'PIX') {
         setFormData((prev) => ({

@@ -54,36 +54,36 @@ export default function AddressForm() {
     }))
 
     const coupom = coupons[0]
-    if (formData.advertisement) {
-      const body = {
-        email: formData.email,
-        phone: formData.phone,
-        name: formData.name,
-        total: formData.total,
-        ...(coupom && {
-          coupon: {
-            code: coupom.code,
-            discountValue: coupom.discount,
-          },
-        }),
-        address: {
-          cep: data.postalCode,
-          street: data.address,
-          number: data.addressNumber,
-          neighborhood: data.district,
-          city: data.city,
-          state: data.state,
-          addressComplement: data.addressComplement,
-        },
-        cartItems: minimalCart,
-      }
 
-      fetcher('/public/capture-lead', 'POST', { body })
+    const body = {
+      email: formData.email,
+      phone: formData.phone,
+      name: formData.name,
+      total: formData.total,
+      ...(coupom && {
+        coupon: {
+          code: coupom.code,
+          discountValue: coupom.discount,
+        },
+      }),
+      address: {
+        cep: data.postalCode,
+        street: data.address,
+        number: data.addressNumber,
+        neighborhood: data.district,
+        city: data.city,
+        state: data.state,
+        addressComplement: data.addressComplement,
+      },
+      cartItems: minimalCart,
     }
+
+    const lead: any = await fetcher('/public/capture-lead', 'POST', { body })
 
     setFormData((prev) => ({
       ...prev,
       ...data,
+      leadId: lead.leadId,
     }))
 
     setFormStep(2)

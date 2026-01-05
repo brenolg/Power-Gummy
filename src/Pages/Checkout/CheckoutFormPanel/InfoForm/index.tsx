@@ -46,24 +46,23 @@ export default function InfoForm() {
     }))
 
     const coupom = await coupons[0]
-    if (data.advertisement) {
-      const body = {
-        email: data.email,
-        phone: data.phone,
-        name: data.name,
-        total: formData.total,
-        cartItems: minimalCart,
-        ...(coupom && {
-          coupon: {
-            code: coupom.code,
-            discountValue: coupom.discount,
-          },
-        }),
-      }
 
-      const x = await fetcher('/public/capture-lead', 'POST', { body })
-      console.log('LEAD', x, body)
+    const body = {
+      email: data.email,
+      phone: data.phone,
+      name: data.name,
+      total: formData.total,
+      cartItems: minimalCart,
+      ...(coupom && {
+        coupon: {
+          code: coupom.code,
+          discountValue: coupom.discount,
+        },
+      }),
     }
+
+    const x = await fetcher('/public/capture-lead', 'POST', { body })
+    console.log('LEAD', x, body)
 
     setFormData(data)
     setFormStep(1)
