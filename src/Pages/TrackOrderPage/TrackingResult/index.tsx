@@ -50,7 +50,7 @@ export default function TrackingDetails({
           <CodeMuted>Código de rastreamento — AWB</CodeMuted>
           <TrackingCode style={{ marginBottom: '8px' }}>{trackingCode}</TrackingCode>
           <CodeMuted>Previsão de entrega</CodeMuted>
-          <TrackingCode>{`${formatDateBR(estimatedDeliveryDate)}`}</TrackingCode>
+          {estimatedDeliveryDate ? formatDateBR(estimatedDeliveryDate) : '-'}
           <CodeMuted>Status atual</CodeMuted>
           <TrackingCode>{`${currentStatus}`}</TrackingCode>
         </HeaderLeft>

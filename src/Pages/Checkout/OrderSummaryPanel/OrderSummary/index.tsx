@@ -91,7 +91,7 @@ export default function OrderSummary({ couponMode = 'sum' }: Props) {
   }, [total, setFormData])
 
   async function calcularFrete() {
-    if (subtotal > 119 && (formPostalCode.startsWith('8') || formPostalCode.startsWith('9'))) {
+    if (subtotal > 199 && (formPostalCode.startsWith('8') || formPostalCode.startsWith('9'))) {
       setShipping({ valor: 0, prazo: 0 })
       return
     }

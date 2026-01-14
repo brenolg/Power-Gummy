@@ -96,7 +96,7 @@ export const HistoryTitle = styled.h3`
   line-height: 120%; /* 24px */
 `
 
-export const Card = styled.h3`
+export const Card = styled.div`
   border-radius: 16px;
   background: rgba(255, 255, 255, 0.48);
   padding: 24px;

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   Wrapper,
   Card,
@@ -18,6 +18,7 @@ import glass from '@/assets/icons/magnifyingGlass.svg'
 import imgError from '@/assets/icons/error.svg'
 import LoadingBtn from '@/components/LoadingBtn'
 import { useFetch } from '@/hooks/useFetch'
+import { useSearchParams } from 'react-router-dom'
 
 type TrackFormProps = {
   setTrackStatus: React.Dispatch<React.SetStateAction<number>>
@@ -25,17 +26,23 @@ type TrackFormProps = {
 }
 
 export default function TrackForm({ setTrackStatus, setTrackData }: TrackFormProps) {
-  const [orderId, setOrderId] = useState('')
+  const [awb, setAwb] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
 
+  const [searchParams] = useSearchParams()
   const { fetcher } = useFetch()
+
+  useEffect(() => {
+    const awbFromUrl = searchParams.get('awb')
+    if (awbFromUrl) setAwb(awbFromUrl)
+  }, [searchParams])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault() // evita reload da página
     setError('')
 
-    if (!orderId.trim()) {
+    if (!awb.trim()) {
       setError('Digite o código de rastreio.')
       return
     }
@@ -43,7 +50,7 @@ export default function TrackForm({ setTrackStatus, setTrackData }: TrackFormPro
     try {
       setLoading(true)
       const body = {
-        awb: orderId,
+        awb: awb,
       }
       console.log(body)
       const res: any = await fetcher('/public/track-order', 'POST', { body })
@@ -52,6 +59,7 @@ export default function TrackForm({ setTrackStatus, setTrackData }: TrackFormPro
       if (!res || res.error) {
         throw new Error(res?.message || 'Pedido não encontrado.')
       }
+      console.log(res)
       setTrackData(res)
       setTrackStatus(1)
     } catch (err: any) {
@@ -78,8 +86,8 @@ export default function TrackForm({ setTrackStatus, setTrackData }: TrackFormPro
               <label>ID do Pedido</label>
 
               <Input
-                value={orderId}
-                onChange={(e) => setOrderId(e.target.value)}
+                value={awb}
+                onChange={(e) => setAwb(e.target.value)}
                 placeholder="Digite o código de rastreio"
               />
             </InputGroup>
