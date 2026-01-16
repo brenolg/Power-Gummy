@@ -116,7 +116,6 @@ export default function OrderSummary({ couponMode = 'sum' }: Props) {
         subtotal: subtotal,
         peso: Number((pesoCaixas + pesoProdutos).toFixed(2)),
       }
-      console.log('Body Frete', body)
 
       const resp = await fetcher<ShippingResponse>('public/calculate-shipping', 'POST', { body })
 

@@ -73,9 +73,6 @@ export default function Cupons() {
         influencer: edited.influencer ?? '', // ✅ sempre manda string
       }
 
-      console.log('PATCH id:', edited.id)
-      console.log('BODY PATCH', body)
-
       await fetcher(`/admin/coupon/${edited.id}`, 'PATCH', { body })
 
       setData((prev) =>
@@ -89,8 +86,6 @@ export default function Cupons() {
 
   async function handleDeleteCoupon(item: Coupon) {
     try {
-      console.log('DELETE id:', item.id)
-
       await fetcher(`/admin/coupons/${item.id}`, 'DELETE')
 
       // remove da tela após sucesso

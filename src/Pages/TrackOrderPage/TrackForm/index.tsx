@@ -52,14 +52,14 @@ export default function TrackForm({ setTrackStatus, setTrackData }: TrackFormPro
       const body = {
         awb: awb,
       }
-      console.log(body)
+
       const res: any = await fetcher('/public/track-order', 'POST', { body })
 
       // ✅ Se quiser validar resposta:
       if (!res || res.error) {
         throw new Error(res?.message || 'Pedido não encontrado.')
       }
-      console.log(res)
+
       setTrackData(res)
       setTrackStatus(1)
     } catch (err: any) {

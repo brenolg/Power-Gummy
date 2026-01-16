@@ -40,7 +40,6 @@ export default function Banners() {
 
         const res = (await fetcher('/admin/banners', 'GET')) as Banner[]
 
-        console.log(res)
         setData(res)
       } catch (error) {
         console.error('Erro ao carregar Banners:', error)
@@ -75,12 +74,8 @@ export default function Banners() {
   }
   // PATCH /admin/coupon/{COUPON_ID}
   async function handleEditBanner(payload: BannerEditPayload) {
-    console.log('Edit')
     try {
-      //,
-
-      const x = await fetcher(`/admin/banner/${payload.id}`, 'PATCH', { body: payload })
-      console.log(x)
+      await fetcher(`/admin/banner/${payload.id}`, 'PATCH', { body: payload })
 
       setData((prev) =>
         prev.map((banner) => (banner.id === payload.id ? { ...banner, ...payload } : banner))
@@ -98,8 +93,6 @@ export default function Banners() {
 
   async function handleDeleteBanner(item: Banner) {
     try {
-      console.log('DELETE id:', item.id)
-
       await fetcher(`/admin/banner/${item.id}`, 'DELETE')
 
       // remove da tela após sucesso

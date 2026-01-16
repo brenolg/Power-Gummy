@@ -94,7 +94,6 @@ export default function PaymentCardForm() {
   }, [installments, paymentMethod])
 
   const handleStep = async () => {
-    console.log(coupons)
     if (globalLoading) return
 
     const isValid = await methods.trigger() // valida só no cartão
@@ -172,13 +171,9 @@ export default function PaymentCardForm() {
         }),
       }
 
-      const res: any = await fetcher('/public/create-order', 'POST', {
-        body: bodyCreateOrder,
-      })
-      console.log('CREATE ', bodyCreateOrder)
-
       const coupom = coupons.find((c) => !c.code.startsWith('PIX'))
-      const body = {
+
+      const leadBody = {
         email: formData.email,
         phone: formData.phone,
         name: formData.name,
@@ -203,8 +198,11 @@ export default function PaymentCardForm() {
         paymentMethod: paymentMethod,
       }
 
-      const x = await fetcher('/public/capture-lead', 'POST', { body })
-      console.log('lead payform', x)
+      await fetcher('/public/capture-lead', 'POST', { body: leadBody })
+
+      const res: any = await fetcher('/public/create-order', 'POST', {
+        body: bodyCreateOrder,
+      })
 
       if (paymentMethod === 'PIX') {
         setFormData((prev) => ({

@@ -30,7 +30,6 @@ export default function CouponRow({ item, index, onEdit, onDelete }: CouponRowPr
       influencer: influencer || undefined,
       active,
     }
-    console.log('EDITED', edited)
 
     onEdit(edited)
     setShowEdit(false)

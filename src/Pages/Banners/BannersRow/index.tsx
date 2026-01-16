@@ -57,7 +57,7 @@ export default function BannersRow({ item, index, onEdit, onDelete }: BannersRow
       if (item.position !== position) edit.position = position
       if (item.context !== context) edit.context = context
       if (item.active !== active) edit.active = active
-      console.log(edit, item, active)
+
       setPayload(edit)
     }
   }, [active, position, context])

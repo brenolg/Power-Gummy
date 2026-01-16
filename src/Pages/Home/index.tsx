@@ -41,7 +41,6 @@ export default function Home() {
           `/public/banner?platform=${isMobile ? 'mobile' : 'desktop'}`,
           'GET'
         )
-        console.log(data)
 
         setBanerData(data as BannerData[])
       } finally {

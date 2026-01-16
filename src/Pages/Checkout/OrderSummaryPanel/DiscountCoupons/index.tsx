@@ -79,8 +79,6 @@ export const DiscountCoupons: React.FC<DiscountCouponsProps> = ({ onChange }) =>
 
       const { code: serverCode, percent } = resp
 
-      console.log(resp)
-
       const newCoupon: Coupon = {
         code: serverCode, // código validado pelo back
         discount: percent, // percent

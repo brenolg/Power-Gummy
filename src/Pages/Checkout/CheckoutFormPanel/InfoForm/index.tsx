@@ -6,6 +6,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { schema } from './schema'
 import { useCoreData } from '@/context/coreDataContext'
 import { useFetch } from '@/hooks/useFetch'
+import { useState } from 'react'
 
 export type CheckoutFormData = {
   name: string
@@ -17,6 +18,7 @@ export type CheckoutFormData = {
 export default function InfoForm() {
   const { setFormStep, setFormData, coupons, formData, cart } = useCoreData()
   const { fetcher } = useFetch()
+  const [loading, setLoading] = useState(false)
 
   const methods = useForm<CheckoutFormData>({
     resolver: yupResolver(schema) as Resolver<CheckoutFormData>,
@@ -31,12 +33,14 @@ export default function InfoForm() {
   })
 
   const handleStep = async () => {
-    console.log(cart)
+    if (loading) return
+
     const isValid = await methods.trigger() // valida todos os campos
     if (!isValid) {
       console.error('Form inválido')
       return // impede avanço
     }
+    setLoading(true)
 
     const data = methods.getValues()
 
@@ -45,7 +49,7 @@ export default function InfoForm() {
       quantity: item.quantity,
     }))
 
-    const coupom = await coupons[0]
+    const coupom = coupons.find((c) => !c.code.startsWith('PIX'))
 
     const body = {
       email: data.email,
@@ -61,10 +65,10 @@ export default function InfoForm() {
       }),
     }
 
-    const x = await fetcher('/public/capture-lead', 'POST', { body })
-    console.log('LEAD', x, body)
+    await fetcher('/public/capture-lead', 'POST', { body })
 
     setFormData(data)
+    setLoading(false)
     setFormStep(1)
   }
 
@@ -87,7 +91,9 @@ export default function InfoForm() {
           <Checkbox name="advertisement" label="Enviar novidades e promoções" />
         </InputContainer>
 
-        <MainButton type="submit">Avançar</MainButton>
+        <MainButton type="submit" loading={loading}>
+          Avançar
+        </MainButton>
       </form>
     </FormProvider>
   )

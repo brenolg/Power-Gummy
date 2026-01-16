@@ -85,7 +85,6 @@ export default function BannerForm({ setData, banners, setOpen }: BannerFormProp
       const desktopRes = (await fetcher('/admin/banner', 'POST', {
         body: desktopBody,
       })) as any
-      console.log(desktopRes)
 
       const mobileBody = {
         imageUrl: mobileImageUrl,
@@ -94,7 +93,6 @@ export default function BannerForm({ setData, banners, setOpen }: BannerFormProp
         context: data.context,
       }
 
-      console.log(desktopBody)
       const mobileRes = (await fetcher('/admin/banner', 'POST', {
         body: mobileBody,
       })) as any
@@ -144,7 +142,6 @@ export default function BannerForm({ setData, banners, setOpen }: BannerFormProp
       try {
         if (!auth.currentUser) {
           await signInAnonymously(auth)
-          console.log('Firebase auth OK')
         }
       } catch (error) {
         console.error('Erro ao autenticar no Firebase:', error)

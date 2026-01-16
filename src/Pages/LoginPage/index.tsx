@@ -37,7 +37,6 @@ export default function LoginPage() {
       }
 
       const res: any = await fetcher('/public/admin/login', 'POST', { body })
-      console.log(res)
 
       if (!res || res.error) {
         throw new Error(res?.message || 'Credenciais inválidas.')

@@ -54,8 +54,6 @@ export function useFetch(baseUrl: string = BASE) {
 
       const url = joinUrl(baseUrl, path) + queryString(query)
 
-      console.log('URL fetch', url)
-
       const h: Record<string, string> = {
         'Content-Type': 'application/json',
         ...(token ? { Authorization: `Bearer ${token}` } : {}),

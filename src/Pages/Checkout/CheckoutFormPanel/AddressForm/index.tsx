@@ -8,7 +8,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { schema } from './schema'
 import { Warning } from './styles'
 import { useFetch } from '@/hooks/useFetch'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 export type CheckoutFormData = {
   postalCode: string
@@ -22,6 +22,7 @@ export type CheckoutFormData = {
 
 export default function AddressForm() {
   const { setFormPostalCode, setFormData, formData, coupons, setFormStep, cart } = useCoreData()
+  const [loading, setLoading] = useState(false)
   const { fetcher } = useFetch()
 
   const methods = useForm<CheckoutFormData>({
@@ -40,11 +41,13 @@ export default function AddressForm() {
   })
 
   const handleStep = async () => {
+    if (loading) return
     const isValid = await methods.trigger() // valida todos os campos
 
     if (!isValid) {
       return // impede avanço
     }
+    setLoading(true)
 
     const data = methods.getValues()
 
@@ -53,7 +56,7 @@ export default function AddressForm() {
       quantity: item.quantity,
     }))
 
-    const coupom = coupons[0]
+    const coupom = coupons.find((c) => !c.code.startsWith('PIX'))
 
     const body = {
       email: formData.email,
@@ -86,6 +89,7 @@ export default function AddressForm() {
       leadId: lead.leadId,
     }))
 
+    setLoading(false)
     setFormStep(2)
   }
 

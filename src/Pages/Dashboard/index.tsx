@@ -46,7 +46,7 @@ export default function Dashboard() {
       try {
         setLoading(true)
         const res = await fetcher(`/admin/dashboard`, 'GET')
-        console.log(res)
+
         setData(res as any)
       } catch (error) {
         console.error('Erro ao carregar dashboard:', error)
@@ -61,12 +61,11 @@ export default function Dashboard() {
 
   useEffect(() => {
     async function load() {
-      console.log(year)
       if (!year) return
       try {
         setSecondLoading(true)
         const res: any = await fetcher(`/admin/dashboard?year=${year}`, 'GET')
-        console.log(res)
+
         setData((prev: any) => {
           if (!prev) return res
 

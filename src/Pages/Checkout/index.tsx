@@ -66,11 +66,9 @@ export default function Checkout() {
             state: data.address.state,
           }))
 
-          console.log(data.address.city)
           setFormPostalCode(data.address.cep)
           setFormStep(2)
         }
-        console.log(data)
       } finally {
         setLoading(false)
       }

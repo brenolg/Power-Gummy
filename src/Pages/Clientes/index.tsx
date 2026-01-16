@@ -50,7 +50,7 @@ export default function Clients() {
             coupon: couponArray,
           }
         })
-        console.log(normalized)
+
         setData(normalized)
       } catch (error) {
         console.error('Erro ao carregar leads:', error)

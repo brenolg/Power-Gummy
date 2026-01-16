@@ -81,15 +81,11 @@ export default function CreateCouponForm({ setData, setOpen }: CreateCouponFormP
         influencer: data.influencer?.trim(),
       }
 
-      console.log('Criando cupom:', body)
-
       const res = (await fetcher('/admin/coupon', 'POST', { body })) as ApiResponse
 
       if (!res || res.error) {
         throw new Error(res?.message || 'Erro ao criar cupom')
       }
-
-      console.log(res)
 
       const newCoupon = {
         id: data.code,
