@@ -1,73 +1,96 @@
-# React + TypeScript + Vite
+# 🍬 Power Gummy
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Aplicação web de e-commerce voltada para conversão, desenvolvida como página de vendas com integração a pagamentos.
 
-Currently, two official plugins are available:
+Totalmente responsiva, com suporte a dispositivos mobile (a partir de 320px) e desktop.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Conta com dashboard administrativo, captura e visualização de leads, checkout (Pix e cartão), administração de banners e cupons, integração com feed do Instagram e rastreamento de pedidos.
 
-## React Compiler
+👉 https://powergummybr.com.br/
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+> Projeto desenvolvido como freelance, em colaboração com designer (UI/UX) e backend, com integração a gateway de pagamentos.
 
-## Expanding the ESLint configuration
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 📸 Preview
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+<img src="./demo.gif" alt="Power Gummy Demo" />
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## 📌 Sobre o projeto
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+O **Power Gummy** é uma aplicação web de e-commerce desenvolvida com foco em **performance, experiência do usuário e conversão**, contemplando todo o fluxo de vendas:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+- Landing page otimizada para conversão
+- Checkout com pagamentos reais (Pix e cartão)
+- Sistema de autenticação de usuários
+- Dashboard administrativo
+- Captura e gestão de leads
+- Administração de banners e cupons
+- Rastreamento de pedidos (Total Express)
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+O projeto foi construído em parceria com designer (UI/UX) e backend, garantindo uma experiência completa desde a navegação até a finalização da compra.
+
+
+## 🧠 Funcionalidades
+
+### 🛍️ Loja / Landing Page
+- Interface moderna, responsiva e focada em conversão
+- Totalmente responsivo (mobile-first), com suporte a partir de 320px até desktop
+- Carrinho em localstorage
+- Seções estratégicas (benefícios, depoimentos, FAQ)
+- Animações e carrosséis dinâmicos
+- Carrinho de compras com drawer interativo
+- Integração com Instagram
+
+### 💳 Checkout
+- Fluxo completo de compra
+- Integração com pagamentos reais (**Pix e cartão**)
+- Validação de formulários com **React Hook Form + Yup**
+- Aplicação de cupons de desconto
+- Captura de leads durante o processo
+- Resumo do pedido em tempo real
+
+### 🔐 Autenticação
+- Sistema de login de usuários
+- Proteção de rotas
+- Controle de acesso ao dashboard
+
+### 📊 Dashboard Administrativo
+- Visualização de métricas de vendas
+- Gestão de leads capturados
+
+### 👥 Gestão
+- Gerenciamento de cupons
+- Visualização e acompanhamento de leads
+- Administração de banners
+
+### 📦 Pedidos
+- Rastreamento de pedidos (Total Express)
+- Status e detalhes das compras
+
+## 🛠️ Tecnologias utilizadas
+
+- React.js
+- TypeScript
+- Vite
+- React Router DOM
+- Context API
+- React Hook Form
+- Yup
+- Styled Components
+
+
+## ▶️ Como rodar o projeto
+
+```bash
+# Clone o repositório
+git clone https://github.com/brenolg/Power-Gummy.git
+
+# Acesse a pasta
+cd power-gummy
+
+# Instale as dependências
+npm install
+
+# Inicie o projeto
+npm run dev
