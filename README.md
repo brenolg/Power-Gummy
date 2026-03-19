@@ -10,11 +10,9 @@ Conta com dashboard administrativo, captura e visualização de leads, checkout 
 
 > Projeto desenvolvido como freelance, em colaboração com designer (UI/UX) e backend, com integração a gateway de pagamentos.
 
-
 ## 📸 Preview
 
 <img src="./demo.gif" alt="Power Gummy Demo" />
-
 
 ## 📌 Sobre o projeto
 
@@ -30,10 +28,10 @@ O **Power Gummy** é uma aplicação web de e-commerce desenvolvida com foco em 
 
 O projeto foi construído em parceria com designer (UI/UX) e backend, garantindo uma experiência completa desde a navegação até a finalização da compra.
 
-
 ## 🧠 Funcionalidades
 
 ### 🛍️ Loja / Landing Page
+
 - Interface moderna, responsiva e focada em conversão
 - Totalmente responsivo (mobile-first), com suporte a partir de 320px até desktop
 - Carrinho em localstorage
@@ -43,6 +41,7 @@ O projeto foi construído em parceria com designer (UI/UX) e backend, garantindo
 - Integração com Instagram
 
 ### 💳 Checkout
+
 - Fluxo completo de compra
 - Integração com pagamentos reais (**Pix e cartão**)
 - Validação de formulários com **React Hook Form + Yup**
@@ -51,20 +50,24 @@ O projeto foi construído em parceria com designer (UI/UX) e backend, garantindo
 - Resumo do pedido em tempo real
 
 ### 🔐 Autenticação
+
 - Sistema de login de usuários
 - Proteção de rotas
 - Controle de acesso ao dashboard
 
 ### 📊 Dashboard Administrativo
+
 - Visualização de métricas de vendas
 - Gestão de leads capturados
 
 ### 👥 Gestão
+
 - Gerenciamento de cupons
 - Visualização e acompanhamento de leads
 - Administração de banners
 
 ### 📦 Pedidos
+
 - Rastreamento de pedidos (Total Express)
 - Status e detalhes das compras
 
@@ -78,7 +81,6 @@ O projeto foi construído em parceria com designer (UI/UX) e backend, garantindo
 - React Hook Form
 - Yup
 - Styled Components
-
 
 ## ▶️ Como rodar o projeto
 
@@ -94,3 +96,4 @@ npm install
 
 # Inicie o projeto
 npm run dev
+```
